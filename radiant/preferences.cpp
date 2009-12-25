@@ -78,6 +78,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define CAMDRAGMULTISELECT_KEY  "CamDragMultiSelect"
 #define CAMFREELOOK_KEY         "CamFreeLook"
 #define CAMINVERSEMOUSE_KEY	    "CamInverseMouse"
+#define CAMINVERSEMOUSEFORWARDSTRAFE_KEY "CamInverseMouseForwardStrafe"
 #define CAMDISCRETE_KEY         "CamDiscrete"
 #define LIGHTDRAW_KEY           "NewLightStyle"
 #define WHATGAME_KEY            "WhichGame"
@@ -104,6 +105,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define CHASEMOUSE_KEY          "ChaseMouse"
 #define ENTITYSHOW_KEY          "EntityShow"
 #define TEXTURESCALE_KEY        "TextureScale"
+#define TEXTUREUNIFORMSIZE_KEY	"TextureUniformSize"
 #define TEXTURESCROLLBAR_KEY    "TextureScrollbar"
 #define DISPLAYLISTS_KEY        "UseDisplayLists"
 #define ANTIALIASEDLINES_KEY    "UseAntialiasedPointsAndLines" // Fishman - Add antialiazed points and lines support. 09/03/00
@@ -616,6 +618,7 @@ PrefsDlg::PrefsDlg ()
   m_bCamFreeLook = TRUE;
   m_bCamFreeLookStrafe = FALSE;
   m_bCamInverseMouse = FALSE;
+  m_bCamInverseMouseForwardStrafe = FALSE;
   m_bCamDiscrete = TRUE;
   m_bNewLightDraw = FALSE;
   m_strPrefabPath = "";
@@ -651,6 +654,7 @@ PrefsDlg::PrefsDlg ()
   m_bSelectModels = TRUE;
   m_nEntityShowState = ENTITY_SKINNED_BOXED;
   m_nTextureScale = 2;
+  m_nTextureUniformSize = 128;
   m_bSwitchClip = FALSE;
   m_bSelectWholeEntities = TRUE;
   m_nTextureQuality = 3;
@@ -1944,6 +1948,13 @@ void PrefsDlg::BuildDialog ()
   gtk_label_set_justify (GTK_LABEL (GTK_BIN (check)->child), GTK_JUSTIFY_LEFT);
   AddDialogData (check, &m_bCamInverseMouse, DLG_CHECK_BOOL);
 
+  // Invert mouse when forward strafe in freelook mode
+  check = gtk_check_button_new_with_label (_("Invert mouse when forward strafe"));
+  gtk_widget_show (check);
+  gtk_box_pack_start (GTK_BOX (vbox), check, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (GTK_BIN (check)->child), GTK_JUSTIFY_LEFT);
+  AddDialogData (check, &m_bCamInverseMouseForwardStrafe, DLG_CHECK_BOOL);
+
   // Discrete movement
   check = gtk_check_button_new_with_label (_("Discrete movement"));
   gtk_widget_show (check);
@@ -2870,6 +2881,7 @@ void PrefsDlg::LoadPrefs ()
   mLocalPrefs.GetPref(CAMDRAGMULTISELECT_KEY, &m_nCamDragMultiSelect, TRUE);
   mLocalPrefs.GetPref(CAMFREELOOK_KEY,        &m_bCamFreeLook,        TRUE);
   mLocalPrefs.GetPref(CAMINVERSEMOUSE_KEY,    &m_bCamInverseMouse,    FALSE);
+  mLocalPrefs.GetPref(CAMINVERSEMOUSEFORWARDSTRAFE_KEY,	&m_bCamInverseMouseForwardStrafe,	FALSE);
   mLocalPrefs.GetPref(CAMDISCRETE_KEY,        &m_bCamDiscrete,        TRUE);
   mLocalPrefs.GetPref(LIGHTDRAW_KEY,          &m_bNewLightDraw,       TRUE);
   mLocalPrefs.GetPref(CUBICCLIP_KEY,          &m_bCubicClipping,      TRUE);
@@ -2922,6 +2934,7 @@ void PrefsDlg::LoadPrefs ()
 
   // this will probably need to be 75 or 100 for Q1.
   mLocalPrefs.GetPref(TEXTURESCALE_KEY,       &m_nTextureScale,               50);
+  mLocalPrefs.GetPref(TEXTUREUNIFORMSIZE_KEY, &m_nTextureUniformSize,		  128);
 
   // FIXME: Hydra - actually, this stuff is Q1,Q2 and HL specific.
   if ( (g_pGameDescription->mGameFile == "hl.game") )

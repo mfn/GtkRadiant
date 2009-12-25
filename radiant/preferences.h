@@ -563,6 +563,9 @@ public:
   bool  m_bCamFreeLook;
   bool  m_bCamFreeLookStrafe;
   bool	m_bCamInverseMouse;
+  // Note: this is freelook mode only! Inverses mouse forward/backward
+  // strafe when activated with ctrl-shift
+  bool	m_bCamInverseMouseForwardStrafe;
   bool	m_bCamDiscrete;
   bool  m_bNewLightDraw;
   Str   m_strPrefabPath;
@@ -604,6 +607,8 @@ public:
   bool  m_bSelectModels;
   int   m_nEntityShowState;
   int   m_nTextureScale;
+  // Fixed texture size to use, when m_nTextureScale == -1
+  int	m_nTextureUniformSize;
   bool  m_bNormalizeColors;
   bool  m_bSwitchClip;
   bool  m_bSelectWholeEntities;

@@ -337,6 +337,21 @@ void CamWnd::Cam_PositionDrag()
   }
 }
 
+void CamWnd::Cam_PositionStrafeForward()
+{
+  int x, y;
+
+  Sys_GetCursorPos (&x, &y);
+  if (y != m_ptCursorY)
+  {
+    VectorMA (m_Camera.origin,
+        (y - m_ptCursorY) * (g_PrefsDlg.m_bCamInverseMouseForwardStrafe ? -1 : 1),
+        m_Camera.forward, m_Camera.origin);
+    Sys_SetCursorPos(m_ptCursorX, m_ptCursorY);
+    Sys_UpdateWindows (W_CAMERA | W_XY_OVERLAY);
+  }
+}
+
 void CamWnd::Cam_MouseControl (float dtime)
 {
   Cam_KeyControl (dtime);
@@ -346,7 +361,7 @@ void CamWnd::Cam_MouseControl (float dtime)
     int dx, dy;
     gint x, y;
 
-    if( !m_bFreeMove || m_nCambuttonstate == MK_CONTROL )
+    if( !m_bFreeMove || m_nCambuttonstate == MK_CONTROL || m_nCambuttonstate == MK_CONTROL+MK_SHIFT )
       return;
 
     // Update angles
@@ -719,6 +734,14 @@ void CamWnd::Cam_MouseMoved (int x, int y, int buttons)
   if ( (m_bFreeMove && (buttons & MK_CONTROL) && !(buttons & MK_SHIFT)) || (!m_bFreeMove && (buttons == (MK_RBUTTON|MK_CONTROL))) )
   {
     Cam_PositionDrag ();
+    Sys_UpdateWindows (W_XY|W_CAMERA|W_Z);
+    return;
+  }
+ 
+  // Ported feature from 1.5: mouse move + control + shift = strafe towards/backwards of camera POV
+  if ( (m_bFreeMove && (buttons & MK_CONTROL) && (buttons & MK_SHIFT)) || (!m_bFreeMove && (buttons == (MK_RBUTTON|MK_CONTROL|MK_SHIFT))) )
+  {
+    Cam_PositionStrafeForward ();
     Sys_UpdateWindows (W_XY|W_CAMERA|W_Z);
     return;
   }

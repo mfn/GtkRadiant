@@ -426,6 +426,7 @@ struct SKeyInfo
 
 #define ID_TEXTUREWINDOW_SCALEUP        40321
 #define ID_TEXTUREWINDOW_SCALEDOWN      40322
+#define ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED	40323
 
 class CSynapseClientRadiant : public CSynapseClient
 {

@@ -515,6 +515,7 @@ gint HandleCommand (GtkWidget *widget, gpointer data)
     case ID_TEXTURES_TEXTUREWINDOWSCALE_50:
     case ID_TEXTURES_TEXTUREWINDOWSCALE_25:
     case ID_TEXTURES_TEXTUREWINDOWSCALE_10:
+    case ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED:
       g_pParentWnd->SetTextureScale (id);
       break;
     case ID_TEXTURES_LOADLIST: g_pParentWnd->OnTexturesLoadlist (); break;
@@ -1363,6 +1364,10 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   item = create_radio_menu_item_with_mnemonic (menu_in_menu, item, _("10%"),
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_TEXTUREWINDOWSCALE_10, FALSE);
   g_object_set_data (G_OBJECT (window), "menu_textures_texturewindowscale_10", item);
+  menu_separator (menu_in_menu);
+  item = create_radio_menu_item_with_mnemonic (menu_in_menu, item, _("Fixed size"),
+				 GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED, FALSE);
+  g_object_set_data (G_OBJECT (window), "menu_textures_texturewindowscale_fixed", item);
   item = menu_separator (menu);
   item = create_check_menu_item_with_mnemonic (menu, _("shaderlist.txt only"),
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_SHADERLISTONLY, FALSE);
@@ -3854,6 +3859,7 @@ void MainFrame::SetButtonMenuStates()
   case 25 : id = ID_TEXTURES_TEXTUREWINDOWSCALE_25; break;
   case 50 : id = ID_TEXTURES_TEXTUREWINDOWSCALE_50; break;
   case 200 : id = ID_TEXTURES_TEXTUREWINDOWSCALE_200; break;
+  case -1 : id = ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED; break;
   default : id = ID_TEXTURES_TEXTUREWINDOWSCALE_100; break;
   }
   SetTextureScale (id);
@@ -5835,6 +5841,10 @@ void MainFrame::SetTextureScale(int id)
     g_PrefsDlg.m_nTextureScale = 200;
     item = GTK_WIDGET (g_object_get_data (G_OBJECT (m_pWidget), "menu_textures_texturewindowscale_200"));
     break;
+  case ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED:
+    g_PrefsDlg.m_nTextureScale = -1;
+    item = GTK_WIDGET (g_object_get_data (G_OBJECT (m_pWidget), "menu_textures_texturewindowscale_fixed"));
+    break;
   default:
     g_PrefsDlg.m_nTextureScale = 100;
     item = GTK_WIDGET (g_object_get_data (G_OBJECT (m_pWidget), "menu_textures_texturewindowscale_100"));
@@ -5850,6 +5860,7 @@ void MainFrame::SetTextureScale(int id)
 
 void MainFrame::OnTexturewindowScaleup()
 {
+  // Note: ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED is deliberately left out
   switch(g_PrefsDlg.m_nTextureScale) {
   // 200, all the way in, don't do anything
   case 100:
@@ -5869,6 +5880,7 @@ void MainFrame::OnTexturewindowScaleup()
 
 void MainFrame::OnTexturewindowScaledown()
 {
+  // Note: ID_TEXTURES_TEXTUREWINDOWSCALE_FIXED is deliberately left out
   switch(g_PrefsDlg.m_nTextureScale) {
   case 200:
     SetTextureScale(ID_TEXTURES_TEXTUREWINDOWSCALE_100);

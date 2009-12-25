@@ -839,6 +839,45 @@ void Texture_ShowDirectory (int menunum)
   Texture_ShowDirectory();
 }
 
+// Logic ported from 1.5 branch
+// Return the display height of a texture in the texture browser
+int Texture_getHeight(qtexture_t  *tex)
+{
+    int height;
+    if (g_PrefsDlg.m_nTextureScale != -1)
+    {
+      // Don't use uniform size
+      height = (int)(tex->height * ((float)g_PrefsDlg.m_nTextureScale / 100));
+    } else if (tex->height >= tex->width)
+    {
+      // Texture is square, or taller than it is wide
+      height = g_PrefsDlg.m_nTextureUniformSize;
+    } else {
+      // Otherwise, preserve the texture's aspect ratio
+      height = (int)(g_PrefsDlg.m_nTextureUniformSize * ((float)tex->height / tex->width));
+    }
+    return height;
+}
+// Logic ported from 1.5 branch
+// Return the display width of a texture in the texture browser
+int Texture_getWidth(qtexture_t  *tex)
+{
+    int width;
+	if (g_PrefsDlg.m_nTextureScale != -1)
+	{
+      // Don't use uniform size
+      width = (int)(tex->width * ((float)g_PrefsDlg.m_nTextureScale / 100));
+    } else if
+      (tex->width >= tex->height)
+    {
+      // Texture is square, or wider than it is tall
+      width = g_PrefsDlg.m_nTextureUniformSize;
+    } else {
+      // Otherwise, preserve the texture's aspect ratio
+      width = (int)(g_PrefsDlg.m_nTextureUniformSize * ((float)tex->width / tex->height));
+    }
+    return width;
+}
 // scroll origin so the current texture is completely on screen
 // if current texture is not displayed, nothing is changed
 void Texture_ResetPosition()
@@ -864,7 +903,7 @@ void Texture_ResetPosition()
     if (!q)
       break;
 
-    int nHeight = (int)(q->height * ((float)g_PrefsDlg.m_nTextureScale / 100));
+    int nHeight = Texture_getHeight(q);
     // we have found when texdef->name and the shader name match
     // NOTE: as everywhere else for our comparisons, we are not case sensitive
     if (!strcmpi( g_qeglobals.d_texturewin.texdef.GetName(), pCurrentShader->getName() ))
@@ -1146,8 +1185,8 @@ IShader* Texture_NextPos (int *x, int *y)
     continue;
   }
 
-  int nWidth = (int)(q->width * ((float)g_PrefsDlg.m_nTextureScale / 100));
-  int nHeight = (int)(q->height * ((float)g_PrefsDlg.m_nTextureScale / 100));
+  int nWidth = Texture_getWidth(q);
+  int nHeight = Texture_getHeight(q);
   if (current_x + nWidth > g_qeglobals.d_texturewin.width-8 && current_row)
   { // go to the next row unless the texture is the first on the row
     current_x = 8;
@@ -1306,8 +1345,8 @@ void SelectTexture (int mx, int my, bool bShift, bool bFitScale)
     q = current_texture;
     if (!q)
       break;
-    int nWidth = (int)(q->width * ((float)g_PrefsDlg.m_nTextureScale / 100));
-    int nHeight = (int)(q->height * ((float)g_PrefsDlg.m_nTextureScale / 100));
+    int nWidth = Texture_getWidth(q);
+    int nHeight = Texture_getHeight(q);
     if (mx > x && mx - x < nWidth
       && my < y && y - my < nHeight + FONT_HEIGHT)
     {
@@ -1475,8 +1514,8 @@ void Texture_Draw (int width, int height)
     if (!q)
       break;
 
-    nWidth = (int)(q->width * ((float)g_PrefsDlg.m_nTextureScale / 100));
-    nHeight = (int)(q->height * ((float)g_PrefsDlg.m_nTextureScale / 100));
+    nWidth = Texture_getWidth(q);
+    nHeight = Texture_getHeight(q);
 
     if (y != last_y)
     {
