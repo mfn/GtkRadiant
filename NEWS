@@ -1,0 +1,9 @@
+GtkRadiant 1.6 aka ZeroRadiant
+
+day month year, GtkRadiant 1.6.1
++ Store state of crosshair (activate/deactivate with SHIFT-X) in local.conf
++ Ported from 1.5: Added camera forward/backward strafe in freemode when
+  pressing and holding CTRL-SHIFT. Added GUI pref to invert default behavior
++ Ported from 1.5: Added fixed texture size option for texture browser
+  The fixed size defaults to 128 and can be manually change through
+  the "TextureUniformSize" key in local.conf
