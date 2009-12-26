@@ -41,7 +41,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define PAGEFLIPS   2
 
 CString g_strStatus;
-bool g_bCrossHairs = false;
 bool g_bScaleMode;
 int g_nScaleHow;
 bool g_bRotateMode;
@@ -1722,7 +1721,7 @@ void XYWnd::XY_MouseMoved (int x, int y, int buttons)
 
   if (!m_nButtonstate)
   {
-    if (g_bCrossHairs)
+    if (g_PrefsDlg.m_bShowCrosshair)
     {
       Sys_UpdateWindows (W_XY | W_XY_OVERLAY);
     }
@@ -3279,7 +3278,7 @@ void XYWnd::OnExpose ()
       qglRotatef (-90,  1, 0, 0);	    // put Z going up
     }
 
-    if (g_bCrossHairs)
+    if (g_PrefsDlg.m_bShowCrosshair)
     {
       qglColor4f(0.2f, 0.9f, 0.2f, 0.8f);
       qglBegin (GL_LINES);

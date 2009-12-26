@@ -204,6 +204,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define TD_SHIFT2_KEY           "_Shift2"
 #define TD_ROTATE_KEY           "_Rotate"
 
+#define SHOWCROSSHAIR_KEY       "ShowCrosshair"
+
 #define MOUSE_DEF 1
 #define WINDOW_DEF 0
 #define RUNQ2_DEF 0
@@ -692,6 +694,7 @@ PrefsDlg::PrefsDlg ()
 #ifdef ATIHACK_812
 	m_bGlATIHack = FALSE;
 #endif
+  m_bShowCrosshair = FALSE;
 }
 
 /*!
@@ -3103,6 +3106,8 @@ void PrefsDlg::LoadPrefs ()
 #ifdef ATIHACK_812
 	mLocalPrefs.GetPref(ATIHACK_KEY, &m_bGlATIHack, FALSE);
 #endif
+
+  mLocalPrefs.GetPref(SHOWCROSSHAIR_KEY, &m_bShowCrosshair, FALSE);
 
   Undo_SetMaxSize(m_nUndoLevels); // set it internally as well / FIXME: why not just have one global value?
 

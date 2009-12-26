@@ -90,7 +90,6 @@ GSList *g_BSPFrontendCommands;          // List of commands in the BSP menu
 const int CMD_TEXTUREWAD_END = CMD_TEXTUREWAD + MAX_TEXTUREDIRS - 1;
 const int CMD_BSPCOMMAND_END = CMD_BSPCOMMAND + 127;
 
-extern bool g_bCrossHairs;
 extern int g_argc;
 extern char** g_argv;
 extern PatchDialog g_PatchDialog;
@@ -7284,7 +7283,7 @@ void MainFrame::OnGridToggle()
 
 void MainFrame::OnViewCrosshair()
 {
-  g_bCrossHairs ^= 1;
+  g_PrefsDlg.m_bShowCrosshair ^= 1;
   Sys_UpdateWindows (W_XY);
 }
 

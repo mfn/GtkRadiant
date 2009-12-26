@@ -692,6 +692,8 @@ public:
 	bool m_bGlATIHack;
 #endif
 
+  bool m_bShowCrosshair;
+
   void UpdateData (bool retrieve);
 
   /*! Utility function for swapping notebook pages for tree list selections */
