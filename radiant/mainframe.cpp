@@ -1674,6 +1674,21 @@ void MainFrame::create_main_toolbar (GtkWidget *window, GtkWidget *vbox)
                                new_pixmap (window, "file_save.bmp"), GTK_SIGNAL_FUNC (HandleCommand),
                                GINT_TO_POINTER (ID_FILE_SAVE));
   g_object_set_data (G_OBJECT (window), "tb_file_save", w);
+
+  // Undo, Redo
+  if (g_PrefsDlg.m_bShowToolbarUndoRedo == TRUE)
+  {
+    gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
+    w = gtk_toolbar_append_item (GTK_TOOLBAR (toolbar), "", _("Undo (CTRL-Z)"), "",
+                                 new_pixmap (window, "undo.bmp"), GTK_SIGNAL_FUNC (HandleCommand),
+                                 GINT_TO_POINTER (ID_EDIT_UNDO));
+    g_object_set_data (G_OBJECT (window), "tb_undo", w);
+    w = gtk_toolbar_append_item (GTK_TOOLBAR (toolbar), "", _("Redo (CTRL-Y)"), "",
+                                 new_pixmap (window, "redo.bmp"), GTK_SIGNAL_FUNC (HandleCommand),
+                                 GINT_TO_POINTER (ID_EDIT_REDO));
+    g_object_set_data (G_OBJECT (window), "tb_redo", w);
+  }
+
   gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
   w = gtk_toolbar_append_item (GTK_TOOLBAR (toolbar), "", _("x-axis Flip"), "",
                                new_pixmap (window, "brush_flipx.bmp"), GTK_SIGNAL_FUNC (HandleCommand),
@@ -4636,6 +4651,7 @@ void MainFrame::OnPrefs()
   bool bPluginToolbar = g_PrefsDlg.m_bPluginToolbar;
   int nShader = g_PrefsDlg.m_nShader;
   int nTextureQuality = g_PrefsDlg.m_nTextureQuality;
+  bool bShowToolbarUndoRedo = g_PrefsDlg.m_bShowToolbarUndoRedo;
 //  int nLightRadiuses = g_PrefsDlg.m_nLightRadiuses;
   g_PrefsDlg.LoadPrefs();
 
@@ -4649,6 +4665,7 @@ void MainFrame::OnPrefs()
         (g_PrefsDlg.m_nLatchedShader != nShader) ||
         (g_PrefsDlg.m_nLatchedTextureQuality != nTextureQuality)
         || (g_PrefsDlg.m_bLatchedFloatingZ != g_PrefsDlg.m_bFloatingZ)
+        || (g_PrefsDlg.m_bShowToolbarUndoRedo != bShowToolbarUndoRedo)
         )
       gtk_MessageBox(m_pWidget, _("You must restart Radiant for the changes to take effect."));
 

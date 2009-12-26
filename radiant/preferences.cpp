@@ -206,6 +206,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define SHOWCROSSHAIR_KEY       "ShowCrosshair"
 #define GLFONT_KEY              "GlFont"
+#define SHOWTOOLBARUNDOREDO_KEY "ShowToolbarUndoRedo"
 
 #define MOUSE_DEF 1
 #define WINDOW_DEF 0
@@ -697,6 +698,7 @@ PrefsDlg::PrefsDlg ()
 #endif
   m_bShowCrosshair = FALSE;
   m_strGlFont = "";
+  m_bShowToolbarUndoRedo = FALSE;
 }
 
 /*!
@@ -2232,6 +2234,12 @@ void PrefsDlg::BuildDialog ()
   gtk_box_pack_start (GTK_BOX (vbox), check, FALSE, FALSE, 0);
   AddDialogData (check, &m_bLatchedPluginToolbar, DLG_CHECK_BOOL);
 
+  // undo redo  toolbar
+  check = gtk_check_button_new_with_label (_("Undo/Redo Toolbar"));
+  gtk_widget_show (check);
+  gtk_box_pack_start (GTK_BOX (vbox), check, FALSE, FALSE, 0);
+  AddDialogData (check, &m_bShowToolbarUndoRedo, DLG_CHECK_BOOL);
+
 #ifdef _WIN32
   // win32 file dialog
   check = gtk_check_button_new_with_label (_("Use win32 file load dialog"));
@@ -3111,6 +3119,7 @@ void PrefsDlg::LoadPrefs ()
 
   mLocalPrefs.GetPref(SHOWCROSSHAIR_KEY, &m_bShowCrosshair, FALSE);
   mLocalPrefs.GetPref(GLFONT_KEY, &m_strGlFont, "courier 8");
+  mLocalPrefs.GetPref(SHOWTOOLBARUNDOREDO_KEY, &m_bShowToolbarUndoRedo, FALSE);
 
   Undo_SetMaxSize(m_nUndoLevels); // set it internally as well / FIXME: why not just have one global value?
 

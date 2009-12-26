@@ -692,8 +692,12 @@ public:
 	bool m_bGlATIHack;
 #endif
 
+  // Show crosshair in ortho view
   bool m_bShowCrosshair;
+  // Custom font string with which any text in graphic views are rendered
   Str m_strGlFont;
+  // Old-school undo/redo toolbar buttons
+  bool m_bShowToolbarUndoRedo;
 
   void UpdateData (bool retrieve);
 
