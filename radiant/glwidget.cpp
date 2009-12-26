@@ -207,30 +207,44 @@ gboolean WINAPI gtk_glwidget_make_current (GtkWidget *widget)
 }
 
 GLuint font_list_base;
-static gchar font_string[] = "courier 8";
+static gchar font_string_fallback[] = "courier 8";
+static gchar sample_to_calculate_height[] = "ABCDEFGHIJKLMNOPQWRSTUVWXYZabcdefghijklmnopqwrstuvwxyz0123456789_";
 static gint font_height;
 
 void gtk_glwidget_create_font (GtkWidget *widget)
 {
   PangoFontDescription *font_desc;
   PangoFont *font;
-  PangoFontMetrics *font_metrics;
+
+  // 10 was the default value before the new code
+  g_qeglobals.m_nGlFontHeight = 10;
 
   font_list_base = qglGenLists (256);
 
-  font_desc = pango_font_description_from_string (font_string);
+  font_desc = pango_font_description_from_string (g_PrefsDlg.m_strGlFont.GetBuffer());
 
   font = gdk_gl_font_use_pango_font (font_desc, 0, 256, font_list_base);
 
+  // If the font descriptor was invalid, we fallback to a known working
+  // minimum font set
+  if (NULL == font) {
+    Sys_FPrintf(SYS_ERR, "Unable to create font '%s', reverting to '%s'\n",
+        g_PrefsDlg.m_strGlFont.GetBuffer(), font_string_fallback);
+    pango_font_description_free (font_desc);
+    font_desc = pango_font_description_from_string (font_string_fallback);
+    font = gdk_gl_font_use_pango_font (font_desc, 0, 256, font_list_base);
+  }
+
   if(font != NULL)
   {
-    font_metrics = pango_font_get_metrics (font, NULL);
-
-    font_height = pango_font_metrics_get_ascent (font_metrics) +
-                  pango_font_metrics_get_descent (font_metrics);
-    font_height = PANGO_PIXELS (font_height);
-
-    pango_font_metrics_unref (font_metrics);
+    // Using the pango layout is the only hack I found on the net to properly
+    // calculate the height of the font we use to display over the shader images
+    PangoLayout *layout = gtk_widget_create_pango_layout(widget, sample_to_calculate_height);
+    pango_layout_set_font_description (layout, font_desc);
+    int width, height;
+    pango_layout_get_pixel_size (layout, &width, &height);
+    g_qeglobals.m_nGlFontHeight = height;
+    g_free(layout);
   }
 
   pango_font_description_free (font_desc);

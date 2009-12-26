@@ -2336,7 +2336,7 @@ void XYWnd::XY_DrawGrid()
 		float offx = m_vOrigin[nDim2] + h - 6 / m_fScale, offy = m_vOrigin[nDim1] - w + 1 / m_fScale;
 		for (x=xb-((int)xb)%stepx; x<=xe ; x+=stepx)
 		{
-			qglRasterPos2f (x, offx);
+			qglRasterPos2f (x, offx-g_qeglobals.m_nGlFontHeight/2/m_fScale);
 			sprintf (text, "%i",(int)x);
 			gtk_glwidget_print_string(text);
 		}

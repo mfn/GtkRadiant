@@ -906,6 +906,10 @@ typedef struct
   // set to true after OpenGL has been initialized and extensions have been tested
   bool m_bOpenGLReady;
 
+  // Store the height of the font used to display in gl contexts, in pixels.
+  // This is automatically determined in gtk_glwidget_create_font()
+  int m_nGlFontHeight;
+
 } QEGlobals_t;
 
 #endif // _QERTYPES_H_

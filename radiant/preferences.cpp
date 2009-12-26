@@ -205,6 +205,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define TD_ROTATE_KEY           "_Rotate"
 
 #define SHOWCROSSHAIR_KEY       "ShowCrosshair"
+#define GLFONT_KEY              "GlFont"
 
 #define MOUSE_DEF 1
 #define WINDOW_DEF 0
@@ -695,6 +696,7 @@ PrefsDlg::PrefsDlg ()
 	m_bGlATIHack = FALSE;
 #endif
   m_bShowCrosshair = FALSE;
+  m_strGlFont = "";
 }
 
 /*!
@@ -3108,6 +3110,7 @@ void PrefsDlg::LoadPrefs ()
 #endif
 
   mLocalPrefs.GetPref(SHOWCROSSHAIR_KEY, &m_bShowCrosshair, FALSE);
+  mLocalPrefs.GetPref(GLFONT_KEY, &m_strGlFont, "courier 8");
 
   Undo_SetMaxSize(m_nUndoLevels); // set it internally as well / FIXME: why not just have one global value?
 

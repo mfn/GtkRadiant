@@ -52,8 +52,6 @@ Clean up texture menu.
 #define	TYP_MIPTEX	68
 static unsigned	tex_palette[256];
 
-#define	FONT_HEIGHT	10
-
 //int		texture_mode = GL_NEAREST;
 //int		texture_mode = GL_NEAREST_MIPMAP_NEAREST;
 //int		texture_mode = GL_NEAREST_MIPMAP_LINEAR;
@@ -916,7 +914,7 @@ void Texture_ResetPosition()
       // if the bottom of our selected texture will fit with origin 0, use that
       // to prevent scrolling uglyness (stuff scrolled off screen when
       // everything would fit)
-      if ( -(y -nHeight-2*FONT_HEIGHT) <  g_qeglobals.d_texturewin.height) {
+      if ( -(y -nHeight-2*g_qeglobals.m_nGlFontHeight) <  g_qeglobals.d_texturewin.height) {
         g_qeglobals.d_texturewin.originy = 0;
         break;
       }
@@ -928,9 +926,9 @@ void Texture_ResetPosition()
       }
 
       // if current is off the bottom, put it on the bottom
-      if (y-nHeight-2*FONT_HEIGHT < g_qeglobals.d_texturewin.originy-g_qeglobals.d_texturewin.height)
+      if (y-nHeight-2*g_qeglobals.m_nGlFontHeight < g_qeglobals.d_texturewin.originy-g_qeglobals.d_texturewin.height)
       {
-        g_qeglobals.d_texturewin.originy = y-nHeight-2*FONT_HEIGHT+g_qeglobals.d_texturewin.height;
+        g_qeglobals.d_texturewin.originy = y-nHeight-2*g_qeglobals.m_nGlFontHeight+g_qeglobals.d_texturewin.height;
         break;
       }
       // if we made it here, it should already be in view
@@ -1190,7 +1188,7 @@ IShader* Texture_NextPos (int *x, int *y)
   if (current_x + nWidth > g_qeglobals.d_texturewin.width-8 && current_row)
   { // go to the next row unless the texture is the first on the row
     current_x = 8;
-    current_y -= current_row + FONT_HEIGHT + 4;
+    current_y -= current_row + g_qeglobals.m_nGlFontHeight + 4;
     current_row = 0;
   }
 
@@ -1348,7 +1346,7 @@ void SelectTexture (int mx, int my, bool bShift, bool bFitScale)
     int nWidth = Texture_getWidth(q);
     int nHeight = Texture_getHeight(q);
     if (mx > x && mx - x < nWidth
-      && my < y && y - my < nHeight + FONT_HEIGHT)
+      && my < y && y - my < nHeight + g_qeglobals.m_nGlFontHeight)
     {
       if (bShift)
       {
@@ -1525,7 +1523,7 @@ void Texture_Draw (int width, int height)
     last_height = MAX (nHeight, last_height);
 
     // Is this texture visible?
-    if ((y-nHeight-FONT_HEIGHT < g_qeglobals.d_texturewin.originy)
+    if ((y-nHeight-g_qeglobals.m_nGlFontHeight < g_qeglobals.d_texturewin.originy)
         && (y > g_qeglobals.d_texturewin.originy - height))
     {
       // borders rules:
@@ -1540,10 +1538,10 @@ void Texture_Draw (int width, int height)
 	      qglDisable (GL_TEXTURE_2D);
 
 	      qglBegin (GL_LINE_LOOP);
-	      qglVertex2f (x-4,y-FONT_HEIGHT+4);
-	      qglVertex2f (x-4,y-FONT_HEIGHT-nHeight-4);
-	      qglVertex2f (x+4+nWidth,y-FONT_HEIGHT-nHeight-4);
-	      qglVertex2f (x+4+nWidth,y-FONT_HEIGHT+4);
+	      qglVertex2f (x-4,y-g_qeglobals.m_nGlFontHeight+4);
+	      qglVertex2f (x-4,y-g_qeglobals.m_nGlFontHeight-nHeight-4);
+	      qglVertex2f (x+4+nWidth,y-g_qeglobals.m_nGlFontHeight-nHeight-4);
+	      qglVertex2f (x+4+nWidth,y-g_qeglobals.m_nGlFontHeight+4);
 	      qglEnd ();
 
 	      qglEnable (GL_TEXTURE_2D);
@@ -1559,10 +1557,10 @@ void Texture_Draw (int width, int height)
 	        qglDisable (GL_TEXTURE_2D);
 
 	        qglBegin (GL_LINE_LOOP);
-	        qglVertex2f (x-1,y+1-FONT_HEIGHT);
-	        qglVertex2f (x-1,y-nHeight-1-FONT_HEIGHT);
-	        qglVertex2f (x+1+nWidth,y-nHeight-1-FONT_HEIGHT);
-	        qglVertex2f (x+1+nWidth,y+1-FONT_HEIGHT);
+	        qglVertex2f (x-1,y+1-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x-1,y-nHeight-1-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x+1+nWidth,y-nHeight-1-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x+1+nWidth,y+1-g_qeglobals.m_nGlFontHeight);
 	        qglEnd ();
 	        qglEnable (GL_TEXTURE_2D);
 	      }
@@ -1573,10 +1571,10 @@ void Texture_Draw (int width, int height)
 	        qglColor3f (0.5,1,0.5);
 	        qglDisable (GL_TEXTURE_2D);
 	        qglBegin (GL_LINE_LOOP);
-	        qglVertex2f (x-3,y+3-FONT_HEIGHT);
-	        qglVertex2f (x-3,y-nHeight-3-FONT_HEIGHT);
-	        qglVertex2f (x+3+nWidth,y-nHeight-3-FONT_HEIGHT);
-	        qglVertex2f (x+3+nWidth,y+3-FONT_HEIGHT);
+	        qglVertex2f (x-3,y+3-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x-3,y-nHeight-3-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x+3+nWidth,y-nHeight-3-g_qeglobals.m_nGlFontHeight);
+	        qglVertex2f (x+3+nWidth,y+3-g_qeglobals.m_nGlFontHeight);
 	        qglEnd ();
 	        qglEnable (GL_TEXTURE_2D);
 	      }
@@ -1588,20 +1586,24 @@ void Texture_Draw (int width, int height)
       qglColor3f (1,1,1);
       qglBegin (GL_QUADS);
       qglTexCoord2f (0,0);
-      qglVertex2f (x,y-FONT_HEIGHT);
+      qglVertex2f (x,y-g_qeglobals.m_nGlFontHeight);
       qglTexCoord2f (1,0);
-      qglVertex2f (x+nWidth,y-FONT_HEIGHT);
+      qglVertex2f (x+nWidth,y-g_qeglobals.m_nGlFontHeight);
       qglTexCoord2f (1,1);
-      qglVertex2f (x+nWidth,y-FONT_HEIGHT-nHeight);
+      qglVertex2f (x+nWidth,y-g_qeglobals.m_nGlFontHeight-nHeight);
       qglTexCoord2f (0,1);
-      qglVertex2f (x,y-FONT_HEIGHT-nHeight);
+      qglVertex2f (x,y-g_qeglobals.m_nGlFontHeight-nHeight);
       qglEnd ();
 
       // draw the texture name
       qglDisable (GL_TEXTURE_2D);
       qglColor3f (1,1,1);
 
-      qglRasterPos2f (x, y-FONT_HEIGHT+2);
+      // In earlier days, a fixed 2 pixel were used to offset the font further.
+      // With the 1/3 logic we assume the baseline 2/3 from the top of the font.
+      // Should give more usable results for bigger fonts and not worse results
+      // for default values like older radiant versions.
+      qglRasterPos2f (x, y-g_qeglobals.m_nGlFontHeight+(g_qeglobals.m_nGlFontHeight/3));
 
       // don't draw the directory name
       name = (char*)pCurrentShader->getName();
@@ -1614,7 +1616,7 @@ void Texture_Draw (int width, int height)
     }
   }
 
-  g_qeglobals.d_texturewin.m_nTotalHeight = abs(y) + last_height + FONT_HEIGHT + 4;
+  g_qeglobals.d_texturewin.m_nTotalHeight = abs(y) + last_height + g_qeglobals.m_nGlFontHeight + 4;
 
   // reset the current texture
   qglBindTexture(GL_TEXTURE_2D, 0);

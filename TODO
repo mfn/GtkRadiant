@@ -8,3 +8,5 @@
 (that's a bit awkward)
 
 - the game list reload doesn't work right, the entries in the combo probably need to be initialized again
+
+- add GUI pref to allow change font for views (currently must be done by hand in local.conf -> "GlFont")

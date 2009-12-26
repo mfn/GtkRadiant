@@ -693,6 +693,7 @@ public:
 #endif
 
   bool m_bShowCrosshair;
+  Str m_strGlFont;
 
   void UpdateData (bool retrieve);
 
