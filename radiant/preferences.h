@@ -458,10 +458,12 @@ public:
   this holds global level preferences
   */
   CGameDialog mGamesDialog;
+  bool isInitialized();
 protected:
   // warning about old project files
   bool m_bWarn;
   list<CGameDescription *> mGames;
+  bool m_bIsInitialized;
 
 public:
   // last light intensity used in the CLightPrompt dialog, stored in registry

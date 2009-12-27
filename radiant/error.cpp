@@ -112,16 +112,24 @@ void Error (const char *error, ...)
     }
   }
 
-  strcat (text, "An unrecoverable error has occured.\n"
-	  "Would you like to edit Preferences before exiting Radiant?");
+  strcat (text, "An unrecoverable error has occured.\n");
 
-  Sys_Printf(text);
+  if (!g_PrefsDlg.isInitialized()) {
 
-  if (gtk_MessageBox(NULL, text, "Error", MB_YESNO) == IDYES)
-  {
-    Sys_Printf("Doing prefs..\n");
-    g_PrefsDlg.LoadPrefs ();
-    g_PrefsDlg.DoModal();
+    gtk_MessageBox(NULL, text, "Error", MB_OK);
+
+  } else {
+
+    strcat(text, "Would you like to edit Preferences before exiting Radiant?");
+
+    Sys_Printf(text);
+
+    if (gtk_MessageBox(NULL, text, "Error", MB_YESNO) == IDYES)
+    {
+      Sys_Printf("Doing prefs..\n");
+      g_PrefsDlg.LoadPrefs ();
+      g_PrefsDlg.DoModal();
+    }
   }
 
   QGL_Shutdown();

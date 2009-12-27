@@ -603,6 +603,7 @@ static void OnButtonClean (GtkWidget *widget, gpointer data)
 // profile_load_int takes an argument to use if the value is not found
 PrefsDlg::PrefsDlg ()
 {
+  m_bIsInitialized = FALSE;
   m_bWarn = TRUE;
   m_nMouse = 1;
   m_nView = MainFrame::eRegular;
@@ -1507,6 +1508,7 @@ void PrefsDlg::Init()
     m_rc_path = g_string_new (g_strGameToolsPath.GetBuffer() );
     m_inipath = g_string_new (m_rc_path->str);
     g_string_append (m_inipath, PREFS_LOCAL_FILENAME);
+    m_bIsInitialized = true;
     return;
   }
 #endif
@@ -1521,7 +1523,7 @@ void PrefsDlg::Init()
   // then the ini file
   m_inipath = g_string_new (m_rc_path->str);
   g_string_append (m_inipath, PREFS_LOCAL_FILENAME);
-
+  m_bIsInitialized = true;
 }
 
 void PrefsDlg::UpdateData (bool retrieve)
@@ -2844,6 +2846,11 @@ void PrefsDlg::LoadPrefs ()
 {
   int i;
 
+  if (!isInitialized()) {
+    Sys_Printf("PrefsDlg::LoadPrefs() called without being initialized, leaving\n");
+    return;
+  }
+
   // first things first, load prefs from global prefs
   mGamesDialog.LoadPrefs();
 
@@ -3245,6 +3252,10 @@ void PrefsDlg::DoSensitivity()
     }
 }
 
+bool PrefsDlg::isInitialized()
+{
+  return m_bIsInitialized;
+}
 /*
 ============================================================
 CGameInstall
