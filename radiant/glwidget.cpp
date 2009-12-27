@@ -213,6 +213,7 @@ static gint font_height;
 
 void gtk_glwidget_create_font (GtkWidget *widget)
 {
+  const char *font_string;
   PangoFontDescription *font_desc;
   PangoFont *font;
 
@@ -221,7 +222,12 @@ void gtk_glwidget_create_font (GtkWidget *widget)
 
   font_list_base = qglGenLists (256);
 
-  font_desc = pango_font_description_from_string (g_PrefsDlg.m_strGlFont.GetBuffer());
+  font_string = font_string_fallback;
+  if (strlen( g_PrefsDlg.m_strGlFont.GetBuffer() ) > 0) {
+    font_string = g_PrefsDlg.m_strGlFont.GetBuffer();
+  }
+
+  font_desc = pango_font_description_from_string (font_string);
 
   font = gdk_gl_font_use_pango_font (font_desc, 0, 256, font_list_base);
 
