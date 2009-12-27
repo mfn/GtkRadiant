@@ -1,6 +1,14 @@
 GtkRadiant 1.6 aka ZeroRadiant
 
+[Legend: + = new, * = changed, - = removed]
+
 day month year, GtkRadiant 1.6.x
+
+* Fix crash in model plugin when shut down.
+
+* Fix race condition crash: cannot open prefs when no game is selected. 
+
++ Add Undo/Redo to toolbar
 
 + Add pref for specifying a pango font string for the font used in the ortho
   and texture browser view. The config key is "GlFont", the string needs to be
