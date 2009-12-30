@@ -250,7 +250,7 @@ void gtk_glwidget_create_font (GtkWidget *widget)
     int width, height;
     pango_layout_get_pixel_size (layout, &width, &height);
     g_qeglobals.m_nGlFontHeight = height;
-    g_free(layout);
+    g_object_unref(layout);
   }
 
   pango_font_description_free (font_desc);
