@@ -11,7 +11,7 @@ day month year, GtkRadiant 1.6.x
 
 * [Linux] Fix crash and data loss when saving shader, reported by Rambetter.
 
-* Fix crash in model plugin when shut down.
+* Fix crash in model plugin when shut down or loading new map.
 
 * Fix race condition crash: cannot open prefs when no game is selected. 
 
