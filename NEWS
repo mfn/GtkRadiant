@@ -4,7 +4,12 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
-* Fix crash and data loss when saving shader, reported by Rambetter.
+* [Linux] Fix loading of models with upper case letters in path name
+  This is an intrinsic change and probably affects all file loading
+  paths. This change also leads to mixed case letters now showing up
+  in a model entity path name.
+
+* [Linux] Fix crash and data loss when saving shader, reported by Rambetter.
 
 * Fix crash in model plugin when shut down.
 
