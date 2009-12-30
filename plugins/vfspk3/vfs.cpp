@@ -662,6 +662,7 @@ char* vfsExtractRelativePath_short(const char *in, bool shorten)
   int i;
   char l_in[PATH_MAX];
   char check[PATH_MAX];
+  char l_in_lower[PATH_MAX];
   static char out[PATH_MAX];
   out[0] = 0;
 
@@ -690,6 +691,12 @@ char* vfsExtractRelativePath_short(const char *in, bool shorten)
   strcpy(l_in, in);
   vfsCleanFileName(l_in);
 #endif // ifdef WIN32
+  // Create yet another copy, this time with explicitly creating
+  // a lower case version of the string which is *only* used for
+  // comparing them. The returned result is baed only on the
+  // cleaned up version.
+  strcpy(l_in_lower, l_in);
+  strlwr(l_in_lower);
 
 
 #ifdef DBG_RLTPATH
@@ -705,7 +712,7 @@ char* vfsExtractRelativePath_short(const char *in, bool shorten)
 #endif
 
     // try to find a match
-    if (strstr(l_in, check))
+    if (strstr(l_in_lower, check))
     {
       strcpy(out,l_in+strlen(check)+1);
       break;
@@ -768,7 +775,6 @@ char* vfsExtractRelativePath(const char *in)
 
 void vfsCleanFileName(char *in)
 {
-  strlwr(in);
   vfsFixDOSName(in);
   int n = strlen(in);
   if (in[n-1] == '/')
