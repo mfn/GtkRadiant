@@ -7,7 +7,7 @@ day month year, GtkRadiant 1.6.x
 * [Linux] Fix loading of models with upper case letters in path name
   This is an intrinsic change and probably affects all file loading
   paths. This change also leads to mixed case letters now showing up
-  in a model entity path name.
+  in a model entity path name. Reported by Rambetter.
 
 * [Linux] Fix crash and data loss when saving shader, reported by Rambetter.
 
