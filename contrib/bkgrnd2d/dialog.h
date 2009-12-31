@@ -33,4 +33,9 @@ void InitBackgroundDialog();
 void ShowBackgroundDialog();
 void ShowBackgroundDialogPG(int page);
 
+#ifdef _WIN32
+// THIS IS UGLY
+#define snprintf _snprintf
+#endif
+
 #endif // _BKGRND2D_DIALOG_H_
