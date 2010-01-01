@@ -47,7 +47,7 @@ void MakeDecimatedMap(int *NumNodes, int *NumTris, NODE **pNode, TRI **pTri)
 	int Bisect(NODE *, int, int, int);
 	void CalcAngles(NODE *, int *, float *);
 	void EdgeOnSide(int *, int *, int *);
-	int tricall(int, NODE *, int *, TRI **, TRI **, const char *);
+	int tricall(int, NODE *, int *, TRI **, TRI **, char *);
 	int CheckBorders(int *,int,NODE *,int *,TRI **);
 
 	float       biggesterror;
@@ -323,7 +323,7 @@ void MakeDecimatedMap(int *NumNodes, int *NumTris, NODE **pNode, TRI **pTri)
 /*  tricall Takes an array of nodes, spits out an array of triangles         */
 /*                                                                           */
 /*****************************************************************************/
-int tricall(int NumNodes, NODE *Node, int *NumTris, TRI **inTri, TRI **Tri, const char *Options)
+int tricall(int NumNodes, NODE *Node, int *NumTris, TRI **inTri, TRI **Tri, char *Options)
 {
 	struct triangulateio in, out;
 	int    i, N;

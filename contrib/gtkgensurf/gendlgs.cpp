@@ -904,10 +904,10 @@ static gint bitmap_file_entryfocusout(GtkWidget* widget, GdkEventFocus* event, g
 
 static void bitmap_browse (GtkWidget *widget, gpointer data)
 {
-  const char *filename;
+  char *filename;
   char *ptr;
 
-  filename = g_FuncTable.m_pfnFileDialog (g_pWnd, TRUE, "Bitmap File", gbmp.defpath, "gtkgensurf", NULL);
+  filename = (char *)g_FuncTable.m_pfnFileDialog (g_pWnd, TRUE, "Bitmap File", gbmp.defpath, "gtkgensurf", NULL);
 
   if (filename != NULL)
   {

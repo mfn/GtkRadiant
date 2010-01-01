@@ -92,6 +92,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ufoai", "contrib\ufoai\ufoa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PrtView", "contrib\prtview\PrtView_VC9.vcproj", "{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtkgensurf", "contrib\gtkgensurf\gtkgensurf_VC9.vcproj", "{45F78049-C3C4-4DA7-B9D6-D9E0AB380C3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -210,6 +212,10 @@ Global
 		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Debug|Win32.Build.0 = Debug|Win32
 		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Release|Win32.ActiveCfg = Release|Win32
 		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Release|Win32.Build.0 = Release|Win32
+		{45F78049-C3C4-4DA7-B9D6-D9E0AB380C3F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{45F78049-C3C4-4DA7-B9D6-D9E0AB380C3F}.Debug|Win32.Build.0 = Debug|Win32
+		{45F78049-C3C4-4DA7-B9D6-D9E0AB380C3F}.Release|Win32.ActiveCfg = Release|Win32
+		{45F78049-C3C4-4DA7-B9D6-D9E0AB380C3F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
