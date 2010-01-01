@@ -80,7 +80,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bkgrnd2d", "contrib\bkgrnd2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexTool", "plugins\textool\TexTool_VC9.vcproj", "{0E7A6C9F-3A85-45B5-9110-1E6197931242}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bobToolz_gtk_VC9", "contrib\bobtoolz\bobToolz_gtk_VC9.vcproj", "{B5280433-D8AD-4C8E-A4E6-42D255622405}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bobToolz_gtk", "contrib\bobtoolz\bobToolz_gtk_VC9.vcproj", "{B5280433-D8AD-4C8E-A4E6-42D255622405}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spritemodel", "plugins\spritemodel\spritemodel_VC9.vcproj", "{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -180,6 +182,10 @@ Global
 		{B5280433-D8AD-4C8E-A4E6-42D255622405}.Debug|Win32.Build.0 = Debug|Win32
 		{B5280433-D8AD-4C8E-A4E6-42D255622405}.Release|Win32.ActiveCfg = Release|Win32
 		{B5280433-D8AD-4C8E-A4E6-42D255622405}.Release|Win32.Build.0 = Release|Win32
+		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Debug|Win32.Build.0 = Debug|Win32
+		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Release|Win32.ActiveCfg = Release|Win32
+		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
