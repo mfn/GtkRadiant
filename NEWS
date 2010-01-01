@@ -4,7 +4,13 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
-+ Enable bkgrnd2d plugin on Windows (VC9 build only).
++ [Windows] Fix and enable bobtoolz plugin.
+
++ [Windows] Fix and enable textool plugin.
+
+* Fix crashes in textool plugin
+
++ [Windows] Enable bkgrnd2d plugin.
 
 * [Linux] Fix loading of models with upper case letters in path name
   This is an intrinsic change and probably affects all file loading
