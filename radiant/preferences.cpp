@@ -207,6 +207,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SHOWCROSSHAIR_KEY       "ShowCrosshair"
 #define GLFONT_KEY              "GlFont"
 #define SHOWTOOLBARUNDOREDO_KEY "ShowToolbarUndoRedo"
+#define GRIDLIKE15_KEY          "GridLike15"
 
 #define MOUSE_DEF 1
 #define WINDOW_DEF 0
@@ -700,6 +701,7 @@ PrefsDlg::PrefsDlg ()
   m_bShowCrosshair = FALSE;
   m_strGlFont = "";
   m_bShowToolbarUndoRedo = FALSE;
+  m_bGridLike15 = FALSE;
 }
 
 /*!
@@ -1831,6 +1833,12 @@ void PrefsDlg::BuildDialog ()
 	gtk_box_pack_start(GTK_BOX(vbox), check, FALSE, FALSE, 0);
 	AddDialogData(check, &m_bGlATIHack, DLG_CHECK_BOOL);
 #endif
+
+  // Draw alternative grid, like radiant 1.5
+  check = gtk_check_button_new_with_label (_("Draw alternative grid, like radiant 1.5"));
+  gtk_widget_show (check);
+  gtk_box_pack_start(GTK_BOX(vbox), check, FALSE, FALSE, 0);
+  AddDialogData (check, &m_bGridLike15, DLG_CHECK_BOOL);
 
   // Add the page to the notebook
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook), pageframe, preflabel);
@@ -3127,6 +3135,7 @@ void PrefsDlg::LoadPrefs ()
   mLocalPrefs.GetPref(SHOWCROSSHAIR_KEY, &m_bShowCrosshair, FALSE);
   mLocalPrefs.GetPref(GLFONT_KEY, &m_strGlFont, "courier 8");
   mLocalPrefs.GetPref(SHOWTOOLBARUNDOREDO_KEY, &m_bShowToolbarUndoRedo, FALSE);
+  mLocalPrefs.GetPref(GRIDLIKE15_KEY, &m_bGridLike15, FALSE);
 
   Undo_SetMaxSize(m_nUndoLevels); // set it internally as well / FIXME: why not just have one global value?
 

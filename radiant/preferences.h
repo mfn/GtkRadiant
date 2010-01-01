@@ -700,6 +700,8 @@ public:
   Str m_strGlFont;
   // Old-school undo/redo toolbar buttons
   bool m_bShowToolbarUndoRedo;
+  // Draw alternative grid, like radiant 1.5
+  bool  m_bGridLike15;
 
   void UpdateData (bool retrieve);
 

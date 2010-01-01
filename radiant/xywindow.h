@@ -88,6 +88,7 @@ public:
   void DrawCameraIcon();
   void XY_DrawBlockGrid();
   void XY_DrawGrid();
+  void XY_DrawGrid_Like15();
   void XY_MouseMoved (int x, int y, int buttons);
 // TTimo: FIXME: was experimental stuff to track possible endless loop issues
 //  void XY_MouseMovedRec (int x, int y, int buttons);

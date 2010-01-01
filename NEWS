@@ -4,6 +4,11 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ Ported from 1.5: Alternative algorithm to draw the grid.
+  Major and minor grid steps are now differently drawn on lower zoom levels too.
+  Doesn't play nice with the "Q3Radiant Original" theme.
+  Is off by default, enable in preferences (2D Display/Rendering).
+
 * [Windows] Fix and enable gtkgensurf plugin.
 
 * [Windows] Enable PrtView plugin.

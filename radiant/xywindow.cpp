@@ -2418,6 +2418,239 @@ void XYWnd::XY_DrawGrid()
   }
 }
 
+// TODO: That's really an ugly translation; radiant 1.5 has that nicely factored
+// out into it's own class (see grid.cpp there).
+int Grid_getPower()
+{
+  float grid = g_qeglobals.d_gridsize;
+  // TODO: remove hack, provide proper mapping
+  if (grid == 0.0125f) {
+    return -3;
+  }
+  if (grid == 0.25f) {
+    return -2;
+  }
+  if (grid == 0.5f) {
+    return -1;
+  }
+  if (grid == 1.0f) {
+    return 0;
+  }
+  if (grid == 2.0f) {
+    return 1;
+  }
+  if (grid == 4.0f) {
+    return 2;
+  }
+  if (grid == 8.0f) {
+    return 3;
+  }
+  if (grid == 16.0f) {
+    return 4;
+  }
+  if (grid == 32.0f) {
+    return 5;
+  }
+  if (grid == 64.0f) {
+    return 6;
+  }
+  if (grid == 128.0f) {
+    return 7;
+  }
+  if (grid == 256.0f) {
+    return 8;
+  }
+  // Whatever
+  return 1;
+}
+
+// Alternate implementation was is a direct port over from radiant 1.5
+void XYWnd::XY_DrawGrid_Like15(void) {
+	float	x, y, xb, xe, yb, ye;
+	float		w, h;
+	char	text[32];
+	float step, minor_step, stepx, stepy;
+	step = minor_step = stepx = stepy = g_qeglobals.d_gridsize;
+
+	int minor_power = Grid_getPower();
+	int mask;
+
+	while ((minor_step * m_fScale) <= 4.0f) { // make sure minor grid spacing is at least 4 pixels on the screen
+		++minor_power;
+		minor_step *= 2;
+	}
+	int power = minor_power;
+	while ((power % 3) != 0 || (step * m_fScale) <= 32.0f) { // make sure major grid spacing is at least 32 pixels on the screen
+		++power;
+		step = float(pow(2.0f, power));
+	}
+	mask = (1 << (power - minor_power)) - 1;
+	while ((stepx * m_fScale) <= 32.0f) // text step x must be at least 32
+		stepx *= 2;
+	while ((stepy * m_fScale) <= 32.0f) // text step y must be at least 32
+		stepy *= 2;
+
+
+	qglDisable(GL_TEXTURE_2D);
+	qglDisable(GL_TEXTURE_1D);
+	qglDisable(GL_DEPTH_TEST);
+	qglDisable(GL_BLEND);
+	qglLineWidth(1);
+
+	w = (m_nWidth / 2 / m_fScale);
+	h = (m_nHeight / 2 / m_fScale);
+
+	const int nDim1 = (m_nViewType == YZ) ? 1 : 0;
+	const int nDim2 = (m_nViewType == XY) ? 1 : 2;
+
+	xb = m_vOrigin[nDim1] - w;
+	if (xb < region_mins[nDim1])
+		xb = region_mins[nDim1];
+	xb = step * floor (xb / step);
+
+	xe = m_vOrigin[nDim1] + w;
+	if (xe > region_maxs[nDim1])
+		xe = region_maxs[nDim1];
+	xe = step * ceil (xe / step);
+
+	yb = m_vOrigin[nDim2] - h;
+	if (yb < region_mins[nDim2])
+		yb = region_mins[nDim2];
+	yb = step * floor (yb / step);
+
+	ye = m_vOrigin[nDim2] + h;
+	if (ye > region_maxs[nDim2])
+		ye = region_maxs[nDim2];
+	ye = step * ceil (ye / step);
+
+	// djbob
+	// draw minor blocks
+	if (g_qeglobals.d_showgrid) {
+		if (COLORS_DIFFER(COLOR_GRIDMINOR, COLOR_GRIDBACK)) {
+			qglColor3fv(g_qeglobals.d_savedinfo.colors[COLOR_GRIDMINOR]);
+
+			qglBegin (GL_LINES);
+			int i = 0;
+			for (x = xb ; x < xe ; x += minor_step, ++i) {
+				if ((i & mask) != 0) {
+					qglVertex2f (x, yb);
+					qglVertex2f (x, ye);
+				}
+			}
+			i = 0;
+			for (y = yb ; y < ye ; y += minor_step, ++i) {
+				if ((i & mask) != 0) {
+					qglVertex2f (xb, y);
+					qglVertex2f (xe, y);
+				}
+			}
+			qglEnd();
+		}
+
+		// draw major blocks
+		if (COLORS_DIFFER(COLOR_GRIDMAJOR, COLOR_GRIDBACK)) {
+			qglColor3fv(g_qeglobals.d_savedinfo.colors[COLOR_GRIDMAJOR]);
+
+			qglBegin (GL_LINES);
+			for (x = xb ; x <= xe ; x += step) {
+				qglVertex2f (x, yb);
+				qglVertex2f (x, ye);
+			}
+			for (y = yb ; y <= ye ; y += step) {
+				qglVertex2f (xb, y);
+				qglVertex2f (xe, y);
+			}
+			qglEnd();
+		}
+	}
+
+	// draw coordinate text if needed
+	if ( g_qeglobals.d_savedinfo.show_coordinates) {
+		qglColor3fv(g_qeglobals.d_savedinfo.colors[COLOR_GRIDTEXT]);
+		float offx = m_vOrigin[nDim2] + h - 6 / m_fScale, offy = m_vOrigin[nDim1] - w + 1 / m_fScale;
+		for (x = xb - fmod(xb, stepx); x <= xe ; x += stepx) {
+			qglRasterPos2f (x, offx);
+			sprintf (text, "%g", x);
+			gtk_glwidget_print_string(text);
+		}
+		for (y = yb - fmod(yb, stepy); y <= ye ; y += stepy) {
+			qglRasterPos2f (offy, y);
+			sprintf (text, "%g", y);
+			gtk_glwidget_print_string(text);
+		}
+
+		if (Active())
+			qglColor3fv(g_qeglobals.d_savedinfo.colors[COLOR_VIEWNAME]);
+
+		// we do this part (the old way) only if show_axis is disabled
+		if (!g_qeglobals.d_savedinfo.show_axis) {
+			qglRasterPos2f ( m_vOrigin[nDim1] - w + 35 / m_fScale, m_vOrigin[nDim2] + h - 20 / m_fScale );
+
+			//GlobalOpenGL().drawString(ViewType_getTitle(m_viewType));
+      char cView[20];
+      if (m_nViewType == XY)
+        strcpy(cView, "XY Top");
+      else
+        if (m_nViewType == XZ)
+          strcpy(cView, "XZ Front");
+        else
+          strcpy(cView, "YZ Side");
+
+        gtk_glwidget_print_string(cView);
+		}
+	}
+
+  if ( g_qeglobals.d_savedinfo.show_axis)
+  {
+    // draw two lines with corresponding axis colors to highlight current view
+    // horizontal line: nDim1 color
+    qglLineWidth(2);
+    qglBegin( GL_LINES );
+    qglColor3fv (g_qeglobals.d_savedinfo.AxisColors[nDim1]);
+    qglVertex2f( m_vOrigin[nDim1] - w + 40 / m_fScale, m_vOrigin[nDim2] + h - 45 / m_fScale );
+    qglVertex2f( m_vOrigin[nDim1] - w + 65 / m_fScale, m_vOrigin[nDim2] + h - 45 / m_fScale );
+    qglVertex2f( 0, 0 );
+    qglVertex2f( 32 / m_fScale, 0 );
+    qglColor3fv (g_qeglobals.d_savedinfo.AxisColors[nDim2]);
+    qglVertex2f( m_vOrigin[nDim1] - w + 40 / m_fScale, m_vOrigin[nDim2] + h - 45 / m_fScale );
+    qglVertex2f( m_vOrigin[nDim1] - w + 40 / m_fScale, m_vOrigin[nDim2] + h - 20 / m_fScale );
+    qglVertex2f( 0, 0 );
+    qglVertex2f( 0, 32 / m_fScale );
+    qglEnd();
+    qglLineWidth(1);
+    // now print axis symbols
+    qglColor3fv (g_qeglobals.d_savedinfo.AxisColors[nDim1]);
+    qglRasterPos2f ( m_vOrigin[nDim1] - w + 55 / m_fScale, m_vOrigin[nDim2] + h - 55 / m_fScale );
+    gtk_glwidget_print_char(g_AxisName[nDim1]);
+    qglRasterPos2f (28 / m_fScale, -10 / m_fScale );
+    gtk_glwidget_print_char(g_AxisName[nDim1]);
+    qglColor3fv (g_qeglobals.d_savedinfo.AxisColors[nDim2]);
+    qglRasterPos2f ( m_vOrigin[nDim1] - w + 25 / m_fScale, m_vOrigin[nDim2] + h - 30 / m_fScale );
+    gtk_glwidget_print_char(g_AxisName[nDim2]);
+    qglRasterPos2f ( -10 / m_fScale, 28 / m_fScale );
+    gtk_glwidget_print_char(g_AxisName[nDim2]);
+
+  }
+
+	// show current work zone?
+	// the work zone is used to place dropped points and brushes
+  if (g_qeglobals.d_show_work)
+  {
+    qglColor3f( 1.0f, 0.0f, 0.0f );
+    qglBegin( GL_LINES );
+    qglVertex2f( xb, g_qeglobals.d_work_min[nDim2] );
+    qglVertex2f( xe, g_qeglobals.d_work_min[nDim2] );
+    qglVertex2f( xb, g_qeglobals.d_work_max[nDim2] );
+    qglVertex2f( xe, g_qeglobals.d_work_max[nDim2] );
+    qglVertex2f( g_qeglobals.d_work_min[nDim1], yb );
+    qglVertex2f( g_qeglobals.d_work_min[nDim1], ye );
+    qglVertex2f( g_qeglobals.d_work_max[nDim1], yb );
+    qglVertex2f( g_qeglobals.d_work_max[nDim1], ye );
+    qglEnd();
+  }
+}
+
+
 /*
 ==============
 XY_DrawBlockGrid
@@ -2879,7 +3112,12 @@ void XYWnd::XY_Draw()
   //
   // now draw the grid
   //
-  XY_DrawGrid ();
+  if (g_PrefsDlg.m_bGridLike15) {
+    XY_DrawGrid_Like15 ();
+  } else {
+    // old behavior
+    XY_DrawGrid ();
+  }
 
   //
   // draw block grid
