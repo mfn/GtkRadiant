@@ -4,6 +4,8 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ [Windows] Enable PrtView plugin.
+
 + [Windows] Enable ufoai plugin.
 
 + [Windows] Enable hydratoolz, fix and enable vfswad
