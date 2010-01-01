@@ -88,6 +88,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hydratoolz", "contrib\hydra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vfswad", "plugins\vfswad\vfswad_VC9.vcproj", "{46D60DDA-021F-4E2F-A08C-52ADB3F32088}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ufoai", "contrib\ufoai\ufoai_VC9.vcproj", "{30CA3316-1A93-4A4C-BF77-85396A84FACD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -198,6 +200,10 @@ Global
 		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Debug|Win32.Build.0 = Debug|Win32
 		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Release|Win32.ActiveCfg = Release|Win32
 		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Release|Win32.Build.0 = Release|Win32
+		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Debug|Win32.Build.0 = Debug|Win32
+		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Release|Win32.ActiveCfg = Release|Win32
+		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
