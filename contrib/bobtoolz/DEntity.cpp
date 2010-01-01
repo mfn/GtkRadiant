@@ -57,7 +57,7 @@ const char* brushEntityList[] = {
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-DEntity::DEntity(char *classname, int ID)
+DEntity::DEntity(const char *classname, int ID)
 {
 	SetClassname(classname);
 	m_nID = ID;
@@ -303,7 +303,7 @@ void DEntity::SelectBrushes(bool *selectList)
 
 	g_FuncTable.m_pfnAllocateActiveBrushHandles();
 
-	for(std::list<DBrush *>::const_iterator pBrush=brushList.begin(); pBrush!=brushList.end(); pBrush++)
+	for(list<DBrush *>::const_iterator pBrush=brushList.begin(); pBrush!=brushList.end(); pBrush++)
 	{
 		if(selectList[(*pBrush)->m_nBrushID])
 			g_FuncTable.m_pfnSelectBrush((*pBrush)->QER_brush);
@@ -488,7 +488,7 @@ int DEntity::GetIDMax( void ) {
 	return max+1;
 }
 
-void DEntity::SetClassname( char *classname ) {
+void DEntity::SetClassname( const char *classname ) {
 	m_Classname = classname;
 }
 
