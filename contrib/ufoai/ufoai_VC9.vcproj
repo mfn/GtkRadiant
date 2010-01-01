@@ -18,8 +18,8 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)\install\modules"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			IntermediateDirectory="$(SolutionDir)\build\intermediate\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="synapse.lib splines.lib libxml2.lib glib-2.0.lib gobject-2.0.lib gtk-win32-2.0.lib intl.lib mathlib.lib cmdlib.lib gdk-win32-2.0.lib"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\..\libxml2\lib&quot;;&quot;$(SolutionDir)\..\gtk2\lib&quot;;&quot;$(SolutionDir)\build\$(ConfigurationName)\libs&quot;"
-				ModuleDefinitionFile="ofuai.def"
+				ModuleDefinitionFile="ufoai.def"
 				GenerateDebugInformation="true"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
