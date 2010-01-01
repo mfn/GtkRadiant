@@ -4,21 +4,23 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
-+ [Windows] Enable PrtView plugin.
+* [Windows] Fix and enable gtkgensurf plugin.
 
-+ [Windows] Enable ufoai plugin.
+* [Windows] Enable PrtView plugin.
 
-+ [Windows] Enable hydratoolz, fix and enable vfswad
+* [Windows] Enable ufoai plugin.
 
-+ [Windows] Enable spritemodel plguin.
+* [Windows] Enable hydratoolz, fix and enable vfswad
 
-+ [Windows] Fix and enable bobtoolz plugin.
+* [Windows] Enable spritemodel plguin.
 
-+ [Windows] Fix and enable textool plugin.
+* [Windows] Fix and enable bobtoolz plugin.
+
+* [Windows] Fix and enable textool plugin.
 
 * Fix crashes in textool plugin
 
-+ [Windows] Enable bkgrnd2d plugin.
+* [Windows] Enable bkgrnd2d plugin.
 
 * [Linux] Fix loading of models with upper case letters in path name
   This is an intrinsic change and probably affects all file loading
