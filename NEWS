@@ -4,6 +4,8 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ [Windows] Enable spritemodel plguin.
+
 + [Windows] Fix and enable bobtoolz plugin.
 
 + [Windows] Fix and enable textool plugin.
