@@ -90,6 +90,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vfswad", "plugins\vfswad\vf
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ufoai", "contrib\ufoai\ufoai_VC9.vcproj", "{30CA3316-1A93-4A4C-BF77-85396A84FACD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PrtView", "contrib\prtview\PrtView_VC9.vcproj", "{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -204,6 +206,10 @@ Global
 		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Debug|Win32.Build.0 = Debug|Win32
 		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Release|Win32.ActiveCfg = Release|Win32
 		{30CA3316-1A93-4A4C-BF77-85396A84FACD}.Release|Win32.Build.0 = Release|Win32
+		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Debug|Win32.Build.0 = Debug|Win32
+		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Release|Win32.ActiveCfg = Release|Win32
+		{C225303D-CF3E-4F49-BB95-01A16AFF9DBF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
