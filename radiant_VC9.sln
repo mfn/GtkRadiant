@@ -84,6 +84,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bobToolz_gtk", "contrib\bob
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spritemodel", "plugins\spritemodel\spritemodel_VC9.vcproj", "{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hydratoolz", "contrib\hydratoolz\hydratoolz_VC9.vcproj", "{C4842D6E-F71A-41C5-B384-E98A1FED4BD1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vfswad", "plugins\vfswad\vfswad_VC9.vcproj", "{46D60DDA-021F-4E2F-A08C-52ADB3F32088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -186,6 +190,14 @@ Global
 		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Debug|Win32.Build.0 = Debug|Win32
 		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Release|Win32.ActiveCfg = Release|Win32
 		{F2A1A416-1762-45B6-A6AA-DD76FFA10F88}.Release|Win32.Build.0 = Release|Win32
+		{C4842D6E-F71A-41C5-B384-E98A1FED4BD1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4842D6E-F71A-41C5-B384-E98A1FED4BD1}.Debug|Win32.Build.0 = Debug|Win32
+		{C4842D6E-F71A-41C5-B384-E98A1FED4BD1}.Release|Win32.ActiveCfg = Release|Win32
+		{C4842D6E-F71A-41C5-B384-E98A1FED4BD1}.Release|Win32.Build.0 = Release|Win32
+		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Debug|Win32.ActiveCfg = Debug|Win32
+		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Debug|Win32.Build.0 = Debug|Win32
+		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Release|Win32.ActiveCfg = Release|Win32
+		{46D60DDA-021F-4E2F-A08C-52ADB3F32088}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
