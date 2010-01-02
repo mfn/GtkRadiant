@@ -1,7 +1,7 @@
 ; imagem8.def : Declares the module parameters for the DLL.
 
 LIBRARY      "ImageM8"
-DESCRIPTION  'ImageM8 Windows Dynamic Link Library'
+; DESCRIPTION  'ImageM8 Windows Dynamic Link Library'
 
 EXPORTS
     ; Explicit exports can go here

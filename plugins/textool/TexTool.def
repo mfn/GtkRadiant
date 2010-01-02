@@ -1,7 +1,7 @@
 ; TexTool.def : Declares the module parameters for the DLL.
 
 LIBRARY      "TexTool"
-DESCRIPTION  'TexTool Windows Dynamic Link Library'
+; DESCRIPTION  'TexTool Windows Dynamic Link Library'
 
 EXPORTS
     ; Explicit exports can go here

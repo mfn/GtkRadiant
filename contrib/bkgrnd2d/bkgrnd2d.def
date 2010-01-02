@@ -1,7 +1,7 @@
 ; bkgrnd2d.def : Declares the module parameters for the DLL.
 
 LIBRARY      "BKGRND2D"
-DESCRIPTION  'BKGRND2D Windows Dynamic Link Library'
+; DESCRIPTION  'BKGRND2D Windows Dynamic Link Library'
 
 EXPORTS
     ; Explicit exports can go here

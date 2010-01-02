@@ -1,7 +1,7 @@
 ; gensurf.def : Declares the module parameters for the DLL.
 
 LIBRARY      "gensurf"
-DESCRIPTION  'gensurf Windows Dynamic Link Library'
+; DESCRIPTION  'gensurf Windows Dynamic Link Library'
 
 EXPORTS
     ; Explicit exports can go here
