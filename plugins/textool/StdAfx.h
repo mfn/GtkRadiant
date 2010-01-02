@@ -113,6 +113,8 @@ public:
 	bool OnMButtonUp(guint32 nFlags, double x, double y) { return false; }
 	bool OnRButtonUp(guint32 nFlags, double x, double y);
   bool OnMouseMove(guint32 nFlags, double x, double y);
+  bool OnMouseScroll(GdkScrollDirection direction, gdouble x, gdouble y);
+  bool OnResize(int width, int height);
   bool OnKeyPressed(char *s);
   bool Paint();
   void Close();

@@ -182,6 +182,24 @@ bool C2DView::OnMouseMove (int xPos, int yPos)
   return false;
 }
 
+bool C2DView::OnMouseScroll (GdkScrollDirection direction, int x, int y)
+{
+  if (ViewState == View_Idle)
+  {
+    if (direction == GDK_SCROLL_DOWN)
+    {
+      ZoomOut();
+      return true;
+    }
+    if (direction == GDK_SCROLL_UP)
+    {
+      ZoomIn();
+      return true;
+    }
+  }
+  return false;
+}
+
 bool C2DView::OnKeyDown (char *s)
 {
   if (ViewState == View_Idle)

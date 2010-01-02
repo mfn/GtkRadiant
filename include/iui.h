@@ -51,6 +51,8 @@ public:
   virtual bool OnMButtonUp(guint32 nFlags, gdouble x, gdouble y) = 0;
   virtual bool OnRButtonUp(guint32 nFlags, gdouble x, gdouble y) = 0;
   virtual bool OnMouseMove(guint32 nFlags, gdouble x, gdouble y) = 0;
+  virtual bool OnMouseScroll(GdkScrollDirection direction, gdouble x, gdouble y) = 0;
+  virtual bool OnResize(int width, int height) = 0;
   virtual bool OnKeyPressed(char *s) = 0;
 
   // paint message, the caller makes the GL context current, calls Paint, then swaps GL buffers

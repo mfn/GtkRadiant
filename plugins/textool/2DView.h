@@ -62,6 +62,7 @@ public:
   bool OnMouseMove (int x, int y);
   bool OnRButtonUp (int x, int y);
   bool OnKeyDown (char *s);
+  bool OnMouseScroll (GdkScrollDirection direction, int x, int y);
 
   void ZoomIn();
   void ZoomOut();

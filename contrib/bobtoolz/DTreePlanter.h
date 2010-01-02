@@ -43,6 +43,8 @@ public:
 	virtual bool OnMButtonUp(guint32 nFlags, gdouble x, gdouble y);
 	virtual bool OnRButtonUp(guint32 nFlags, gdouble x, gdouble y);
 	virtual bool OnKeyPressed(char *s) { return false; }
+	virtual bool OnMouseScroll(GdkScrollDirection direction, gdouble x, gdouble y) { return false; }
+	virtual bool OnResize(int width, int height) {  return false; }
 	virtual bool Paint() { return true; }
 	virtual void Close() { }
 	

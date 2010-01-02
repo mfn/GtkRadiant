@@ -57,6 +57,21 @@ static void button_release (GtkWidget *widget, GdkEventButton *event, gpointer d
   }
 }
 
+
+// React to mouse wheel scrolling events
+static void scroll (GtkWidget *widget, GdkEventScroll *event, gpointer data)
+{
+  IWindowListener *pListen = static_cast<IWindowListener *>(data);
+  pListen->OnMouseScroll(event->direction, event->x, event->y);
+}
+
+// React to window resize request events
+static void resize (GtkWidget *widget, GtkAllocation *allocation, gpointer data)
+{
+  IWindowListener *pListen = static_cast<IWindowListener *>(data);
+  pListen->OnResize(allocation->width, allocation->height);
+}
+
 static void motion (GtkWidget *widget, GdkEventMotion *event, gpointer data)
 {
   IWindowListener *pListen = static_cast<IWindowListener *>(data);
@@ -141,7 +156,7 @@ bool CGtkWindow::Show()
   m_pGLWidget = gtk_glwidget_new(FALSE, g_qeglobals_gui.d_glBase);
 
   gtk_widget_set_events (m_pGLWidget, GDK_DESTROY | GDK_EXPOSURE_MASK | GDK_KEY_PRESS_MASK |
-			 GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
+			 GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
   // Connect signal handlers
   gtk_signal_connect (GTK_OBJECT (m_pGLWidget), "expose_event", GTK_SIGNAL_FUNC (expose), this);
@@ -151,6 +166,10 @@ bool CGtkWindow::Show()
 		      GTK_SIGNAL_FUNC (button_press), m_pListen);
   gtk_signal_connect (GTK_OBJECT (m_pGLWidget), "button_release_event",
 		      GTK_SIGNAL_FUNC (button_release), m_pListen);
+  gtk_signal_connect (GTK_OBJECT (m_pGLWidget), "scroll_event",
+		      GTK_SIGNAL_FUNC (scroll), m_pListen);
+  gtk_signal_connect (GTK_OBJECT (m_pGLWidget), "size_allocate",
+		      GTK_SIGNAL_FUNC (resize), m_pListen);
 
   gtk_signal_connect (GTK_OBJECT (m_pWnd), "delete_event", GTK_SIGNAL_FUNC (close_widget), this);
   gtk_signal_connect (GTK_OBJECT (m_pWnd), "key_press_event",

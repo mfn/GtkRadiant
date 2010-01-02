@@ -43,6 +43,8 @@ public:
 	bool OnMButtonUp(guint32 nFlags, gdouble x, gdouble y);
 	bool OnRButtonUp(guint32 nFlags, gdouble x, gdouble y);
 	bool OnKeyPressed(char *s) { return false; }
+	bool OnMouseScroll(GdkScrollDirection direction, gdouble x, gdouble y) { return false; }
+	bool OnResize(int width, int height) {  return false; }
 	bool Paint() { return true; }
 	void Close() { }
 	

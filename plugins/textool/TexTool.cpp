@@ -775,6 +775,26 @@ bool CWindowListener::OnMouseMove(guint32 nFlags, double x, double y)
   return false;
 }
 
+bool CWindowListener::OnMouseScroll(GdkScrollDirection direction, gdouble x, gdouble y)
+{
+  if (CanProcess ()) {
+    if (g_2DView.OnMouseScroll (direction, (int)x, (int)y)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool CWindowListener::OnResize(int width, int height)
+{
+  // we'll need to update after that as well:
+  g_bTexViewReady = false;
+  // send a repaint message
+  g_pToolWnd->Redraw ();
+
+  return true;
+}
+
 // the widget is closing
 void CWindowListener::Close()
 {
