@@ -1125,9 +1125,10 @@ public:
 
   char *m_strWin32Filters;
   char **m_pstrGTKMasks;
-private:
+  // Moved m_nTypes and m_pTypes into public to fully build gtk filter
   int m_nTypes;
   filetype_copy_t *m_pTypes;
+private:
 
   void DestroyWin32Filters()
   {
@@ -1196,13 +1197,10 @@ private:
 
 };
 
-/**
- * @param[in] baseSubDir should have a trailing slash if not @c NULL
- */
-const char* file_dialog (void *parent, gboolean open, const char* title, const char* path, const char* pattern, const char *baseSubDir)
+// Platform specific dialog for Windows; most users don't like the gtk dialogs
+#ifdef _WIN32
+const char* file_dialog_win (void *parent, gboolean open, const char* title, const char* path, const char* pattern, const char *baseSubDir)
 {
-  // Gtk dialog
-  GtkWidget* file_sel;
   int loop = 1;
   char *new_path = NULL;
 
@@ -1213,212 +1211,58 @@ const char* file_dialog (void *parent, gboolean open, const char* title, const c
   if(pattern != NULL)
     GetFileTypeRegistry()->getTypeList(pattern, &typelist);
 
-#ifdef FILEDLG_DBG
-  Sys_Printf("file_dialog: open = %d title = %s path = %s\n", open, title, path);
-  if (pattern)
-  {
-    Sys_Printf("Patterns:\n");
-    char** p = typelist.m_pstrGTKMasks;
-    while(*p!=NULL)
-      Sys_Printf("%s\n", *p++);
-  }
-  else
-    Sys_Printf("no patterns\n");
-#endif
-
-#ifdef _WIN32
   // win32 dialog stores the selected "save as type" extension in the second null-terminated string
   char customfilter[FILEDLG_CUSTOM_FILTER_LENGTH];
 
-  if (g_PrefsDlg.m_bNativeGUI)
+  // do that the native way
+  /* Place the terminating null character in the szFile. */
+  szFile[0] = '\0';
+  customfilter[0] = customfilter[1] = customfilter[2] = '\0';
+
+  /* Set the members of the OPENFILENAME structure. */
+  ofn.lStructSize = sizeof(OPENFILENAME);
+  ofn.hwndOwner = (HWND)GDK_WINDOW_HWND (g_pParentWnd->m_pWidget->window);
+  if (pattern)
   {
-#ifdef FILEDLG_DBG
-    Sys_Printf("Doing win32 file dialog...");
-#endif
-    // do that the native way
-    /* Place the terminating null character in the szFile. */
-    szFile[0] = '\0';
-    customfilter[0] = customfilter[1] = customfilter[2] = '\0';
+    ofn.nFilterIndex = 0;
+    ofn.lpstrFilter = typelist.m_strWin32Filters;
+  }
+  else ofn.nFilterIndex = 1;
+  ofn.lpstrCustomFilter = customfilter;
+  ofn.nMaxCustFilter = sizeof(customfilter);
+  ofn.lpstrFile = szFile;
+  ofn.nMaxFile = sizeof(szFile);
+  ofn.lpstrFileTitle = NULL; // we don't need to get the name of the file
+  if(path)
+  {
+    // szDirName: Radiant uses unix convention for paths internally
+    //   Win32 (of course) and Gtk (who would have thought) expect the '\\' convention
+    // copy path, replacing dir separators as appropriate
+    for(r=path, w=szDirName; *r!='\0'; r++)
+      *w++ = (*r=='/') ? '\\' : *r;
+    // terminate string
+    *w = '\0';
+    ofn.lpstrInitialDir = szDirName;
+  }
+  else ofn.lpstrInitialDir = NULL;
+  ofn.lpstrTitle = title;
+  ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
 
-    /* Set the members of the OPENFILENAME structure. */
-    ofn.lStructSize = sizeof(OPENFILENAME);
-    ofn.hwndOwner = (HWND)GDK_WINDOW_HWND (g_pParentWnd->m_pWidget->window);
-    if (pattern)
-    {
-      ofn.nFilterIndex = 0;
-      ofn.lpstrFilter = typelist.m_strWin32Filters;
-    }
-    else ofn.nFilterIndex = 1;
-    ofn.lpstrCustomFilter = customfilter;
-    ofn.nMaxCustFilter = sizeof(customfilter);
-    ofn.lpstrFile = szFile;
-    ofn.nMaxFile = sizeof(szFile);
-    ofn.lpstrFileTitle = NULL; // we don't need to get the name of the file
-    if(path)
-    {
-      // szDirName: Radiant uses unix convention for paths internally
-      //   Win32 (of course) and Gtk (who would have thought) expect the '\\' convention
-      // copy path, replacing dir separators as appropriate
-      for(r=path, w=szDirName; *r!='\0'; r++)
-        *w++ = (*r=='/') ? '\\' : *r;
-      // terminate string
-      *w = '\0';
-      ofn.lpstrInitialDir = szDirName;
-    }
-    else ofn.lpstrInitialDir = NULL;
-    ofn.lpstrTitle = title;
-    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-    /* Display the Open dialog box. */
-    // it's open or close depending on 'open' parameter
-    if (open)
-    {
-      if (!GetOpenFileName(&ofn))
-        return NULL;	// canceled
-    }
-    else
-    {
-      if (!GetSaveFileName(&ofn))
-        return NULL;	// canceled
-    }
-
-    if(pattern != NULL)
-      type = typelist.GetTypeForWin32Filter(customfilter+1);
-
-#ifdef FILEDLG_DBG
-    Sys_Printf("Done.\n");
-#endif
+  /* Display the Open dialog box. */
+  // it's open or save depending on 'open' parameter
+  if (open)
+  {
+    if (!GetOpenFileName(&ofn))
+      return NULL;	// canceled
   }
   else
   {
-#endif
-	char buf[PATH_MAX];
-    // do that the Gtk way
-    if (title == NULL)
-      title = open ? _("Open File") : _("Save File");
-
-#ifdef FILEDLG_DBG
-    Sys_Printf("Doing Gtk file dialog:\nBuilding new_path..");
-#endif
-    // we expect an actual path below, if the path is NULL we might crash
-    if (!path || path[0] == '\0')
-    {
-		strcpy(buf, g_pGameDescription->mEnginePath.GetBuffer());
-		strcat(buf, g_pGameDescription->mBaseGame.GetBuffer());
-		strcat(buf, "/");
-		if (baseSubDir)
-			strcat(buf, baseSubDir);
-		path = buf;
-	}
-
-    // alloc new path with extra char for dir separator
-    new_path = new char[strlen(path)+1+1];
-    // copy path, replacing dir separators as appropriate
-    for(r=path, w=new_path; *r!='\0'; r++)
-      *w++ = (*r=='/') ? G_DIR_SEPARATOR : *r;
-    // add dir separator to end of path if required
-    if(*(w-1) != G_DIR_SEPARATOR) *w++ = G_DIR_SEPARATOR;
-    // terminate string
-    *w = '\0';
-
-#ifdef FILEDLG_DBG
-	Sys_Printf("Done.\n");
-	Sys_Printf("Calling gtk_file_selection_new with title: %s...", title);
-#endif
-    file_sel = gtk_file_selection_new (title);
-#ifdef FILEDLG_DBG
-	Sys_Printf("Done.\n");
-	Sys_Printf("Set the masks...");
-#endif
-
-#if 0 //!\todo Add masks to GtkFileSelection in gtk-2.0
-    // set the masks
-    if (pattern)
-    {
-      gtk_file_selection_clear_masks (GTK_FILE_SELECTION (file_sel));
-      gtk_file_selection_set_masks (GTK_FILE_SELECTION (file_sel), const_cast<const char**>(typelist.m_pstrGTKMasks));
-    }
-#endif
-
-#ifdef FILEDLG_DBG
-    Sys_Printf("Done.\n");
-#endif
-
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (file_sel)->ok_button), "clicked",
-      GTK_SIGNAL_FUNC (file_sel_callback), GINT_TO_POINTER (IDOK));
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (file_sel)->cancel_button), "clicked",
-      GTK_SIGNAL_FUNC (file_sel_callback), GINT_TO_POINTER (IDCANCEL));
-    gtk_signal_connect (GTK_OBJECT (file_sel), "delete_event",
-      GTK_SIGNAL_FUNC (dialog_delete_callback), NULL);
-    gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (file_sel));
-
-    if (parent != NULL)
-      gtk_window_set_transient_for (GTK_WINDOW (file_sel), GTK_WINDOW (parent));
-
-#ifdef FILEDLG_DBG
-    Sys_Printf("set_data...");
-#endif
-    bool success = false;
-    g_object_set_data (G_OBJECT (file_sel), "loop", &loop);
-    g_object_set_data (G_OBJECT (file_sel), "success", &success);
-#ifdef FILEDLG_DBG
-    Sys_Printf("Done.\n");
-#endif
-
-    if (!open)
-    {
-#ifdef FILEDLG_DBG
-      Sys_Printf("set_data \"overwrite\" ...");
-#endif
-      g_object_set_data (G_OBJECT (file_sel), "overwrite", GINT_TO_POINTER (1));
-#ifdef FILEDLG_DBG
-      Sys_Printf("Done.\n");
-#endif
-    }
-
-    if (new_path != NULL)
-    {
-#ifdef FILEDLG_DBG
-      Sys_Printf("gtk_file_selection_set_filename... %p (%s)", file_sel, new_path);
-#endif
-      gtk_file_selection_set_filename (GTK_FILE_SELECTION (file_sel), new_path);
-      delete[] new_path;
-#ifdef FILEDLG_DBG
-      Sys_Printf("Done.\n");
-#endif
-    }
-
-    gtk_grab_add (file_sel);
-#ifdef FILEDLG_DBG
-    Sys_Printf("gtk_widget_show... %p", file_sel);
-#endif
-    gtk_widget_show (file_sel);
-#ifdef FILEDLG_DBG
-    Sys_Printf("Done.\n");
-#endif
-
-#ifdef FILEDLG_DBG
-    Sys_Printf("gtk_main_iteration...");
-#endif
-    while (loop)
-      gtk_main_iteration ();
-    if(success)
-    {
-#if 0 //!\todo Add masks to GtkFileSelection in gtk2
-      if(pattern!=NULL)
-        type = typelist.GetTypeForGTKMask(GTK_FILE_SELECTION (file_sel)->mask);
-#endif
-      strcpy(szFile, gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_sel)));
-    }
-#ifdef FILEDLG_DBG
-    Sys_Printf("Done.\n");
-#endif
-
-    gtk_grab_remove (file_sel);
-    gtk_widget_destroy (file_sel);
-#ifdef _WIN32
+    if (!GetSaveFileName(&ofn))
+      return NULL;	// canceled
   }
-#endif
+
+  if(pattern != NULL)
+    type = typelist.GetTypeForWin32Filter(customfilter+1);
 
   // don't return an empty filename
   if(szFile[0] == '\0') return NULL;
@@ -1428,21 +1272,16 @@ const char* file_dialog (void *parent, gboolean open, const char* title, const c
     if(*w=='\\')
       *w = '/';
 
-#if defined(WIN32)
-  if (g_PrefsDlg.m_bNativeGUI) // filetype mask not supported in gtk dialog yet
+  // when saving, force an extension depending on filetype
+  /* \todo SPoG - file_dialog should return filetype information separately.. not force file extension.. */
+  if(!open && pattern != NULL)
   {
-    // when saving, force an extension depending on filetype
-    /* \todo SPoG - file_dialog should return filetype information separately.. not force file extension.. */
-    if(!open && pattern != NULL)
-    {
-      // last ext separator
-      w = strrchr(szFile, '.');
-      // no extension
-      w = (w!=NULL) ? w : szFile+strlen(szFile);
-      strcpy(w, type.pattern+1);
-    }
+    // last ext separator
+    w = strrchr(szFile, '.');
+    // no extension
+    w = (w!=NULL) ? w : szFile+strlen(szFile);
+    strcpy(w, type.pattern+1);
   }
-#endif
 
   // prompt to overwrite existing files
   if (!open)
@@ -1450,12 +1289,133 @@ const char* file_dialog (void *parent, gboolean open, const char* title, const c
       if (gtk_MessageBox (parent, "File already exists.\nOverwrite?", "GtkRadiant", MB_YESNO) == IDNO)
         return NULL;
 
-#ifdef FILEDLG_DBG
-  // ... let's use a static filename
-  Sys_Printf("filename: %p\n", szFile);
+  return szFile;
+}
+
 #endif
+// Platform neutral dialogs (can be enabled for Windows too in the prefs)
+const char* file_dialog_gtk (void *parent, gboolean open, const char* title, const char* path, const char* pattern, const char *baseSubDir)
+{
+  // Gtk dialog
+  GtkWidget* dialog;
+  char *new_path = NULL;
+
+  const char* r;
+  char* w;
+  filetype_t type;
+  CFileType typelist;
+  if(pattern != NULL)
+    GetFileTypeRegistry()->getTypeList(pattern, &typelist);
+
+	char buf[PATH_MAX];
+  // do that the Gtk way
+  if (title == NULL)
+    title = open ? _("Open File") : _("Save File");
+
+  // we expect an actual path below, if the path is NULL we might crash
+  if (!path || path[0] == '\0')
+  {
+	  strcpy(buf, g_pGameDescription->mEnginePath.GetBuffer());
+	  strcat(buf, g_pGameDescription->mBaseGame.GetBuffer());
+	  strcat(buf, "/");
+	  if (baseSubDir)
+		  strcat(buf, baseSubDir);
+	  path = buf;
+	}
+
+  // alloc new path with extra char for dir separator
+  new_path = new char[strlen(path)+1+1];
+  // copy path, replacing dir separators as appropriate
+  for(r=path, w=new_path; *r!='\0'; r++)
+    *w++ = (*r=='/') ? G_DIR_SEPARATOR : *r;
+  // add dir separator to end of path if required
+  if(*(w-1) != G_DIR_SEPARATOR) *w++ = G_DIR_SEPARATOR;
+  // terminate string
+  *w = '\0';
+
+  if (open)
+  {
+    dialog = gtk_file_chooser_dialog_new(title,
+                                        GTK_WINDOW(parent),
+                                        GTK_FILE_CHOOSER_ACTION_OPEN,
+                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                        NULL);
+  }
+  else
+  {
+    dialog = gtk_file_chooser_dialog_new(title,
+                                        GTK_WINDOW(parent),
+                                        GTK_FILE_CHOOSER_ACTION_SAVE,
+                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+                                        NULL);
+    gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "unnamed");
+  }
+  gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
+  gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER_ON_PARENT);
+
+  // Set folder to start from
+  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), new_path);
+  delete[] new_path;
+
+  // add file type filters, if applicable
+  if(pattern != NULL)
+  {
+    CFileType typelist;
+    GetFileTypeRegistry()->getTypeList(pattern, &typelist);
+    // TODO: we need access to the (previous) internal data types for building gtk filters
+    for (int i = 0; i < typelist.m_nTypes; i++)
+    {
+      GtkFileFilter* filter = gtk_file_filter_new();      
+      gtk_file_filter_set_name(filter, typelist.m_pstrGTKMasks[i]);
+      gtk_file_filter_add_pattern(filter, typelist.m_pTypes[i].m_pattern.c_str());
+      gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
+    }
+  }
+
+  gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+
+  if(result == GTK_RESPONSE_ACCEPT)
+  {
+    strcpy(szFile, gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog)));
+  }
+  else
+  {
+    szFile[0] = '\0';
+  }
+
+  gtk_widget_destroy (dialog);
+
+  // don't return an empty filename
+  if(szFile[0] == '\0') return NULL;
+
+  // convert back to unix format
+  for(w=szFile; *w!='\0'; w++)
+    if(*w=='\\')
+      *w = '/';
+
+  // prompt to overwrite existing files
+  if (!open)
+    if (access (szFile, R_OK) == 0)
+      if (gtk_MessageBox (parent, "File already exists.\nOverwrite?", "GtkRadiant", MB_YESNO) == IDNO)
+        return NULL;
 
   return szFile;
+}
+
+/**
+ * @param[in] baseSubDir should have a trailing slash if not @c NULL
+ */
+const char* file_dialog (void *parent, gboolean open, const char* title, const char* path, const char* pattern, const char *baseSubDir)
+{
+  // Platform specific dialogs have been completely separated for maintenance
+#ifdef _WIN32
+  if (g_PrefsDlg.m_bNativeGUI) {
+    return file_dialog_win(parent, open, title, path, pattern, baseSubDir);
+  }
+#endif
+  return file_dialog_gtk(parent, open, title, path, pattern, baseSubDir);
 }
 
 char* WINAPI dir_dialog (void *parent, const char* title, const char* path)
