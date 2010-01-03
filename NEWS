@@ -4,6 +4,14 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ [Linux] Re-worked File Open dialog, use GtkFileChooserDialog,
+  add file filters.
+
+* Fix crash when loading or importing maps from files without extension.
+
++ Textool plugin: texture dialog can now be resized, mouse wheel
+  supports zooming.
+
 + Ported from 1.5: Alternative algorithm to draw the grid.
   Major and minor grid steps are now differently drawn on lower zoom levels too.
   Doesn't play nice with the "Q3Radiant Original" theme.
