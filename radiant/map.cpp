@@ -576,7 +576,11 @@ void Map_LoadFile (const char *filename)
   // prepare to let the map module do the parsing
   FileStream file;
   const char* type = strrchr(filename,'.');
-  if(type!=NULL) type++;
+  if (type == NULL) {
+    type = "";
+  } else {
+    type++;
+  }
     // NOTE TTimo opening has binary doesn't make a lot of sense
   // but opening as text confuses the scriptlib parser
   // this may be a problem if we "rb" and use the XML parser, might have an incompatibility
