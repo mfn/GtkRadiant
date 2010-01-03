@@ -1224,7 +1224,11 @@ void Map_ImportFile (const char *filename)
   Sys_Printf("Importing map from %s\n",filename);
 
   const char* type = strrchr(filename,'.');
-  if(type!=NULL) type++;
+  if (type == NULL) {
+    type = "";
+  } else {
+    type++;
+  }
   /*!\todo Resolve "r" problem in scriptlib" */
   if(file.Open(filename, "rb"))
     Map_Import(&file, type, true);
