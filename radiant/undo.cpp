@@ -506,6 +506,10 @@ void Undo_EndBrushList(brush_t *brushlist)
 	for (brush_t* pBrush = brushlist->next; pBrush != NULL && pBrush != brushlist; pBrush=pBrush->next)
 	{
 		pBrush->undoId = g_lastundo->id;
+		if (pBrush->owner->eclass->fixedsize == 1)
+		{
+			pBrush->owner->undoId = pBrush->undoId;
+		}
 	}
 }
 
