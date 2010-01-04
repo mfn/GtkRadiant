@@ -7,7 +7,7 @@ day month year, GtkRadiant 1.6.x
 * Fix undo loosing entities.
   If you moved a fixedsize entity (e.g. light, ammo, etc.) and undo'd the
   operation, only the brush used for interacting was undo'd, not the entity
-  itself, it remained in its original position.
+  itself, it remained in its original position. Reported by Rambetter.
 
 + [Linux] Re-worked File Open dialog, use GtkFileChooserDialog,
   add file filters.
