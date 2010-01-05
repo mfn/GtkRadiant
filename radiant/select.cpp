@@ -2150,9 +2150,5 @@ void Select_AddToGroup(const char *pName)
 // do we've something selected?
 bool Select_HasSelection()
 {
-	if (selected_brushes.next != &selected_brushes)
-	{
-		return true;
-	}
-	return false;
+	return g_qeglobals.d_select_count > 0;
 }
