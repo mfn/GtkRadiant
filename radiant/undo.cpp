@@ -152,9 +152,12 @@ Undo_SetMaxSize
 */
 void Undo_SetMaxSize(int size)
 {
-	Undo_Clear();
 	if (size < 1) g_undoMaxSize = 1;
-	else g_undoMaxSize = size;
+	if (size < g_undoSize)
+	{
+		Undo_Clear();
+	}
+	g_undoMaxSize = size;
 }
 
 /*
