@@ -65,9 +65,11 @@ qboolean DoColor (int iIndex)
   if (color_dialog (g_pParentWnd->m_pWidget, g_qeglobals.d_savedinfo.colors[iIndex]))
   {
     /*
+	mfn: disabled scaling completely,
+	see http://github.com/mfn/GtkRadiant/issues#issue/13
+
     ** scale colors so that at least one component is at 1.0F
     ** if this is meant to select an entity color
-    */
     if (iIndex == COLOR_ENTITY)
     {
       float largest = 0.0F;
@@ -94,6 +96,7 @@ qboolean DoColor (int iIndex)
 	g_qeglobals.d_savedinfo.colors[iIndex][2] *= scaler;
       }
     }
+    */
 
     Sys_UpdateWindows (W_ALL);
     bColorOpen = false;
