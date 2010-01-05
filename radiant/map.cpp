@@ -559,6 +559,7 @@ void Map_LoadFile (const char *filename)
   //SetInspectorMode(W_CONSOLE);
   Sys_Printf ("Loading map from %s\n", filename );
 
+  Undo_Clear ();
   Map_Free ();
   //++timo FIXME: maybe even easier to have Group_Init called from Map_Free?
   Group_Init();
@@ -853,6 +854,7 @@ Map_New
 void Map_New (void)
 {
 	Sys_Printf ("Map_New\n");
+	Undo_Clear ();
 	Map_Free ();
 
 	strcpy (currentmap, "unnamed.map");
