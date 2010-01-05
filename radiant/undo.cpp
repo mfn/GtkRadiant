@@ -60,6 +60,9 @@ int g_undoMaxMemorySize = 2*1024*1024;	//maximum undo memory (default 2 MB)
 int g_undoMemorySize = 0;				//memory size of undo buffer
 int g_undoId = 1;						//current undo ID (zero is invalid id)
 int g_redoId = 1;						//current redo ID (zero is invalid id)
+int g_undoId_saved = 0;					//last undoId at which the map was saved by the user
+										//used to properly indidcate if the map has been modified
+										//even after undo/redo operations.
 
 /*
 =============
@@ -139,6 +142,7 @@ void Undo_Clear(void)
 	g_undoSize = 0;
 	g_undoMemorySize = 0;
 	g_undoId = 1;
+	g_undoId_saved = 0;
 }
 
 /*
@@ -348,6 +352,14 @@ void Undo_Start(const char *operation)
 
 	Undo_ClearRedo();
 	Undo_GeneralStart(operation);
+	// if the last saved map state refers to a "future" undo and
+	// the user starts a new operation, it's not valid anymore
+	if (g_undoId <= g_undoId_saved)
+	{
+		// this is the inital state and basically means that no
+		// undo state refers to a saved state
+		g_undoId_saved = 0;
+	}
 }
 
 /*
@@ -809,6 +821,7 @@ void Undo_Undo(boolean bSilent)
     g_bScreenUpdates = true;
     UpdateSurfaceDialog();
     Sys_UpdateWindows(W_ALL);
+	Sys_SetTitleBasedOnUndo(g_undoId == g_undoId_saved);
 }
 
 /*
@@ -941,6 +954,7 @@ void Undo_Redo(void)
     g_bScreenUpdates = true;
     UpdateSurfaceDialog();
     Sys_UpdateWindows(W_ALL);
+	Sys_SetTitleBasedOnUndo(g_undoId == g_undoId_saved);
 }
 
 /*
@@ -974,4 +988,13 @@ int Undo_UndoAvailable(void)
 			return true;
 	}
 	return false;
+}
+
+/* Call this to indicate that the map was saved at the current
+undo level. This is used to keep track between undo/redo
+whether the map at a current undo level was really modified
+or not. */
+void Undo_MapSaved()
+{
+	g_undoId_saved = g_undoId;
 }

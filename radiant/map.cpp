@@ -67,6 +67,7 @@ int g_MaxBrushSize = (g_MaxWorldCoord-1)*2;
 
 void AddRegionBrushes (void);
 void RemoveRegionBrushes (void);
+void Map_SetNotModified ();
 
 /*
 =============================================================
@@ -628,7 +629,7 @@ void Map_LoadFile (const char *filename)
 
   Map_RegionOff ();
 
-  modified = false;
+  Map_SetNotModified();
   Sys_SetTitle (filename);
 
   Texture_ShowInuse ();
@@ -826,7 +827,7 @@ void Map_SaveFile (const char *filename, qboolean use_region )
   elapsed_time = (double)(finish - start) / CLOCKS_PER_SEC;
 
   Sys_Printf ("Saved in %-.2f second(s).\n",elapsed_time);
-	modified = false;
+	Map_SetNotModified();
 
 	if ( !strstr( filename, "autosave" ) )
 		Sys_SetTitle (filename);
@@ -874,7 +875,7 @@ void Map_New (void)
   Group_Init();
 
 	Sys_UpdateWindows (W_ALL);
-	modified = false;
+	Map_SetNotModified();
 }
 
 /*
@@ -1294,6 +1295,15 @@ void Map_SaveSelected (MemStream* pMemFile, MemStream* pPatchFile)
   //if (pPatchFile)
   //  Patch_WriteFile(pPatchFile);
   */
+}
+
+/* Mark the current map "unmodified" and remember the undo state
+at which this happened, so we can properly update the title to
+indicate whether the map is modified even after undo/redo operations */
+void Map_SetNotModified()
+{
+	modified = false;
+	Undo_MapSaved();
 }
 
 

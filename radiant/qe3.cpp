@@ -1226,18 +1226,32 @@ bool Sys_ShiftDown ()
 #endif
 }
 
+void Sys_SetTitleBasedOnModified()
+{
+	char title[PATH_MAX];
+
+	if (modified)
+		sprintf (title, "%s *", currentmap);
+	else
+		sprintf (title, "%s", currentmap);
+
+	QE_ConvertDOSToUnixName( title, title );
+	Sys_SetTitle (title);
+}
+
 void Sys_MarkMapModified (void)
 {
-  char title[PATH_MAX];
-
   if (modified != 1)
   {
     modified = true;	// mark the map as changed
-    sprintf (title, "%s *", currentmap);
-
-    QE_ConvertDOSToUnixName( title, title );
-    Sys_SetTitle (title);
+	Sys_SetTitleBasedOnModified();
   }
+}
+
+void Sys_SetTitleBasedOnUndo(bool undo_same_level)
+{
+	modified = undo_same_level ? false : true;
+	Sys_SetTitleBasedOnModified();
 }
 
 void Sys_SetTitle (const char *text)

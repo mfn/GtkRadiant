@@ -168,6 +168,7 @@ double	Sys_DoubleTime (void);
 void    Sys_GetCursorPos (int *x, int *y);
 void    Sys_SetCursorPos (int x, int y);
 void    Sys_SetTitle (const char *text);
+void	Sys_SetTitleBasedOnUndo(bool undo_same_level);
 void    WINAPI Sys_BeginWait (void);
 void    WINAPI Sys_EndWait (void);
 void    Sys_Status(const char *psz, int part);
