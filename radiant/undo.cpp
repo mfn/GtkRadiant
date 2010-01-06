@@ -646,6 +646,7 @@ void Undo_End(void)
 	}
 	//
 	//Sys_Printf("undo size = %d, undo memory = %d\n", g_undoSize, g_undoMemorySize);
+	Sys_MarkMapModified();
 }
 
 /*
