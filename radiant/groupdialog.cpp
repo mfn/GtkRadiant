@@ -397,7 +397,15 @@ void CreateEntity(void)
 
   char* text;
   gtk_tree_model_get(model, &iter, 0, &text, -1);
+
+  Undo_Start("create entity");
+  Undo_AddBrushList(&selected_brushes);
+
   CreateEntityFromName(text, vec3_origin);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
+
   g_free(text);
 
   if (selected_brushes.next == &selected_brushes)
@@ -442,6 +450,9 @@ void AddProp()
     return;
 	}
 
+  Undo_Start("change entity key/value");
+  Undo_AddBrushList(&selected_brushes);
+
   if (multiple_entities)
   {
     brush_t *b;
@@ -451,6 +462,9 @@ void AddProp()
   }
   else
     SetKeyValue(edit_entity, key, value);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 
   // refresh the prop listbox
   SetKeyValuePairs();
@@ -496,6 +510,9 @@ void DelProp(void)
   // Get current selection text
   const char* key = gtk_entry_get_text (GTK_ENTRY (EntWidgets[EntKeyField]));
 
+  Undo_Start("delete entity key/value");
+  Undo_AddBrushList(&selected_brushes);
+
   if (multiple_entities)
   {
     brush_t *b;
@@ -505,6 +522,9 @@ void DelProp(void)
   }
   else
     DeleteKey(edit_entity, key);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 
   // refresh the prop listbox
   SetKeyValuePairs();
@@ -517,6 +537,9 @@ void ResetEntity ()
 
   if (edit_entity == NULL)
     return;
+
+  Undo_Start("reset entity");
+  Undo_AddBrushList(&selected_brushes);
 
   if (multiple_entities)
   {
@@ -545,6 +568,9 @@ void ResetEntity ()
       else
 	pep = pep->next;
     }
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 
   // refresh the dialog
   SetKeyValuePairs ();
@@ -1090,7 +1116,14 @@ static void entity_check (GtkWidget *widget, gpointer data)
 
 static void entitylist_angle (GtkWidget *widget, gpointer data)
 {
+  Undo_Start("change entity angle");
+  Undo_AddBrushList(&selected_brushes);
+
   SetKeyValue (edit_entity, "angle", (char*)data);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
+
   SetKeyValuePairs ();
 }
 
