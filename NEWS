@@ -4,6 +4,36 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ Always mark a map as modified after an undo-able action
+  has been recorded (instead of starting to cluttering the
+  whole code with explicit calls to do that).
+
+* Disable color scaling when changing entity color from color chooser.
+  Previously, the RGB colors were always normalized to
+  the highest value of one of the RGB color values.
+
++ Clear undo history when loading or creating a new map.
+
+* Don't clear undo history when opening preference dialog
+  Previously the undo history was completely trashed *always*.
+  Now we only trash it if the undo buffer actually changes
+  *and* is less than the current number of undo levels in the
+  buffer.
+
++ Added ability to undo the following operations:
+  - nudge any selection
+  - Entities dialog:
+    - changing entity clas
+    - changing key/val
+    - deleting key/val
+    - reset entity
+    - changing to preset angle
+
++ Sync main window title with undo/redo and on disk saved states
+  Previously this was never really in sync. After saving a map,
+  doing undo/redo operation still marked the map as being modified
+  although it matched the last saved state on disk.
+
 * Fix undo loosing entities.
   If you moved a fixedsize entity (e.g. light, ammo, etc.) and undo'd the
   operation, only the brush used for interacting was undo'd, not the entity
