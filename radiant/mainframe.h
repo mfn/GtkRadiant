@@ -409,6 +409,8 @@ struct SKeyInfo
 
 #define ID_SELECT_FUNC_GROUP			40233
 
+#define ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG 40238
+#define ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG 40239
 #define ID_SELECTION_TEXTURE_SHIFTLEFT_1U  40240
 #define ID_SELECTION_TEXTURE_SHIFTRIGHT_1U 40241
 #define ID_SELECTION_TEXTURE_SHIFTUP_1U    40242
@@ -757,6 +759,8 @@ public:
 //  void OnSelectionTextureInc();
   void OnSelectionTextureRotateclock();
   void OnSelectionTextureRotatecounter();
+  void OnSelectionTextureRotateclock1deg();
+  void OnSelectionTextureRotatecounter1deg();
   void OnSelectionTextureScaledown();
   void OnSelectionTextureScaleup();
   void OnSelectionTextureShiftdown();

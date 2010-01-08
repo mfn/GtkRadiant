@@ -229,6 +229,8 @@ SCommandInfo g_Commands[] =
   {"ZZoomIn", GDK_Delete, 0x04, ID_VIEW_ZZOOMIN, "menu_view_zzoomin"},
   {"TexRotateClock", GDK_Next, 0x01, ID_SELECTION_TEXTURE_ROTATECLOCK, "menu_selection_texture_rotateclock"},
   {"TexRotateCounter", GDK_Prior, 0x01, ID_SELECTION_TEXTURE_ROTATECOUNTER, "menu_selection_texture_rotatecounter"},
+  {"TexRotateClock1deg", GDK_Next, 0x05, ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG, "menu_selection_texture_rotateclock_1deg"},
+  {"TexRotateCounter1deg", GDK_Prior, 0x05, ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG, "menu_selection_texture_rotatecounter_1deg"},
   {"TexScaleUp", GDK_Up, 0x04, ID_SELECTION_TEXTURE_SCALEUP, "menu_selection_texture_scaleup"},
   {"TexScaleDown", GDK_Down, 0x04, ID_SELECTION_TEXTURE_SCALEDOWN, "menu_selection_texture_scaledown"},
   {"TexShiftLeft", GDK_Left, 0x01, ID_SELECTION_TEXTURE_SHIFTLEFT, "menu_selection_texture_shiftleft"},
@@ -675,6 +677,8 @@ gint HandleCommand (GtkWidget *widget, gpointer data)
     case ID_SELECTION_TEXTURE_FIT: g_pParentWnd->OnSelectionTextureFit (); break;
     case ID_SELECTION_TEXTURE_ROTATECLOCK: g_pParentWnd->OnSelectionTextureRotateclock (); break;
     case ID_SELECTION_TEXTURE_ROTATECOUNTER: g_pParentWnd->OnSelectionTextureRotatecounter (); break;
+    case ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG: g_pParentWnd->OnSelectionTextureRotateclock1deg (); break;
+    case ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG: g_pParentWnd->OnSelectionTextureRotatecounter1deg (); break;
     case ID_SELECTION_TEXTURE_SCALEUP: g_pParentWnd->OnSelectionTextureScaleup (); break;
     case ID_SELECTION_TEXTURE_SCALEDOWN: g_pParentWnd->OnSelectionTextureScaledown (); break;
     case ID_SELECTION_TEXTURE_SHIFTLEFT: g_pParentWnd->OnSelectionTextureShiftleft (); break;
@@ -1640,6 +1644,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   create_menu_item_with_mnemonic (menu, "MouseRotate", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECT_MOUSEROTATE);
   create_menu_item_with_mnemonic (menu, "TexRotateClock", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECLOCK);
   create_menu_item_with_mnemonic (menu, "TexRotateCounter", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECOUNTER);
+  create_menu_item_with_mnemonic (menu, "TexRotateClock1deg", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG);
+  create_menu_item_with_mnemonic (menu, "TexRotateCounter1deg", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG);
   create_menu_item_with_mnemonic (menu, "TexScaleUp", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALEUP);
   create_menu_item_with_mnemonic (menu, "TexScaleDown", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALEDOWN);
   create_menu_item_with_mnemonic (menu, "TexShiftLeft", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTLEFT);
@@ -7156,7 +7162,7 @@ void MainFrame::OnSelectFuncGroup()
 	// check to see if the selected brush is part of a func group
 	// if it is, deselect everything and reselect the next brush 
 	// in the group
-	brush_t *b2, *b = selected_brushes.next;
+	brush_t *b = selected_brushes.next;
 	entity_t * e;
 	if (b != &selected_brushes)
 	{
@@ -7358,6 +7364,17 @@ void MainFrame::OnSelectionTextureRotateclock()
 void MainFrame::OnSelectionTextureRotatecounter()
 {
   Select_RotateTexture(-abs(g_PrefsDlg.m_nRotation));
+}
+
+// AEon: Fixed texture rotation by 1°
+void MainFrame::OnSelectionTextureRotateclock1deg()
+{
+  Select_RotateTexture(1);
+}
+
+void MainFrame::OnSelectionTextureRotatecounter1deg()
+{
+  Select_RotateTexture(-1);
 }
 
 void MainFrame::OnSelectionTextureScaleup()
