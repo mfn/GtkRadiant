@@ -12,6 +12,3 @@
 - add GUI pref to allow change font for views (currently must be done by hand in local.conf -> "GlFont")
 
 - group entries in NEWS file? currently it's chronically
-
-AEonZR - 1/8/2010 2:12:44 AM
-- Testing push and commit of TODO file.
