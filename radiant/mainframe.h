@@ -409,6 +409,11 @@ struct SKeyInfo
 
 #define ID_SELECT_FUNC_GROUP			40233
 
+#define ID_SELECTION_TEXTURE_SHIFTLEFT_1U  40240
+#define ID_SELECTION_TEXTURE_SHIFTRIGHT_1U 40241
+#define ID_SELECTION_TEXTURE_SHIFTUP_1U    40242
+#define ID_SELECTION_TEXTURE_SHIFTDOWN_1U  40243
+
 // those must have their own ID chunk ID_GRID_025 <= ID_GRID <= ID_GRID_256
 #define ID_GRID_025                     40300
 #define ID_GRID_05                      40301

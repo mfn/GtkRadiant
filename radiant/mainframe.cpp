@@ -235,6 +235,10 @@ SCommandInfo g_Commands[] =
   {"TexShiftRight", GDK_Right, 0x01, ID_SELECTION_TEXTURE_SHIFTRIGHT, "menu_selection_texture_shiftright"},
   {"TexShiftUp", GDK_Up, 0x01, ID_SELECTION_TEXTURE_SHIFTUP, "menu_selection_texture_shiftup"},
   {"TexShiftDown", GDK_Down, 0x01, ID_SELECTION_TEXTURE_SHIFTDOWN, "menu_selection_texture_shiftdown"},
+  {"TexShiftLeft1u", GDK_Left, 0x05, ID_SELECTION_TEXTURE_SHIFTLEFT_1U, "menu_selection_texture_shiftleft_1u"},
+  {"TexShiftRight1u", GDK_Right, 0x05, ID_SELECTION_TEXTURE_SHIFTRIGHT_1U, "menu_selection_texture_shiftright_1u"},
+  {"TexShiftUp1u", GDK_Up, 0x05, ID_SELECTION_TEXTURE_SHIFTUP_1U, "menu_selection_texture_shiftup_1u"},
+  {"TexShiftDown1u", GDK_Down, 0x05, ID_SELECTION_TEXTURE_SHIFTDOWN_1U, "menu_selection_texture_shiftdown_1u"},
   {"GridDown", '[', 0x00, ID_GRID_PREV, "menu_grid_prev"},
   {"GridUp", ']', 0x00, ID_GRID_NEXT, "menu_grid_next"},
   {"TexScaleLeft", GDK_Left, 0x04, ID_SELECTION_TEXTURE_SCALELEFT, "menu_selection_texture_scaleleft"},
@@ -677,6 +681,10 @@ gint HandleCommand (GtkWidget *widget, gpointer data)
     case ID_SELECTION_TEXTURE_SHIFTRIGHT: g_pParentWnd->OnSelectionTextureShiftright (); break;
     case ID_SELECTION_TEXTURE_SHIFTUP: g_pParentWnd->OnSelectionTextureShiftup (); break;
     case ID_SELECTION_TEXTURE_SHIFTDOWN: g_pParentWnd->OnSelectionTextureShiftdown (); break;
+	case ID_SELECTION_TEXTURE_SHIFTLEFT_1U: g_pParentWnd->OnSelectionTextureShiftleft1u (); break;
+    case ID_SELECTION_TEXTURE_SHIFTRIGHT_1U: g_pParentWnd->OnSelectionTextureShiftright1u (); break;
+    case ID_SELECTION_TEXTURE_SHIFTUP_1U: g_pParentWnd->OnSelectionTextureShiftup1u (); break;
+    case ID_SELECTION_TEXTURE_SHIFTDOWN_1U: g_pParentWnd->OnSelectionTextureShiftdown1u (); break;
     case ID_GRID_PREV: g_pParentWnd->OnGridPrev (); break;
     case ID_GRID_NEXT: g_pParentWnd->OnGridNext (); break;
     case ID_SELECTION_TEXTURE_SCALELEFT: g_pParentWnd->OnSelectionTextureScaleLeft (); break;
@@ -1638,6 +1646,10 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   create_menu_item_with_mnemonic (menu, "TexShiftRight", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTRIGHT);
   create_menu_item_with_mnemonic (menu, "TexShiftUp", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTUP);
   create_menu_item_with_mnemonic (menu, "TexShiftDown", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTDOWN);
+  create_menu_item_with_mnemonic (menu, "TexShiftLeft1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTLEFT_1U);
+  create_menu_item_with_mnemonic (menu, "TexShiftRight1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTRIGHT_1U);
+  create_menu_item_with_mnemonic (menu, "TexShiftUp1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTUP_1U);
+  create_menu_item_with_mnemonic (menu, "TexShiftDown1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTDOWN_1U);
   create_menu_item_with_mnemonic (menu, "GridDown", GTK_SIGNAL_FUNC (HandleCommand), ID_GRID_PREV);
   create_menu_item_with_mnemonic (menu, "GridUp", GTK_SIGNAL_FUNC (HandleCommand), ID_GRID_NEXT);
   create_menu_item_with_mnemonic (menu, "TexScaleLeft", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALELEFT);
@@ -7386,6 +7398,27 @@ void MainFrame::OnSelectionTextureShiftup()
 void MainFrame::OnSelectionTextureShiftdown()
 {
   Select_ShiftTexture(0, (int)-g_qeglobals.d_savedinfo.m_SIIncrement.shift[1]);
+}
+
+// AEon: Shift texture by 1u = 1
+void MainFrame::OnSelectionTextureShiftleft1u()
+{
+  Select_ShiftTexture(-1, 0);
+}
+
+void MainFrame::OnSelectionTextureShiftright1u()
+{
+  Select_ShiftTexture(1, 0);
+}
+
+void MainFrame::OnSelectionTextureShiftup1u()
+{
+  Select_ShiftTexture(0, 1);
+}
+
+void MainFrame::OnSelectionTextureShiftdown1u()
+{
+  Select_ShiftTexture(0, -1);
 }
 
 void MainFrame::OnGridPrev()
