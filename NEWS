@@ -4,6 +4,10 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ Patches by AEon:
+  - Allow CTRL-SHIFT cursor keys to shift textures always by one unit
+  - Support numeric keypad keys for changing the grid
+
 + Always mark a map as modified after an undo-able action
   has been recorded (instead of starting to cluttering the
   whole code with explicit calls to do that).
