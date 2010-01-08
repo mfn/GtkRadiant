@@ -763,6 +763,10 @@ public:
   void OnSelectionTextureShiftleft();
   void OnSelectionTextureShiftright();
   void OnSelectionTextureShiftup();
+  void OnSelectionTextureShiftdown1u();
+  void OnSelectionTextureShiftleft1u();
+  void OnSelectionTextureShiftright1u();
+  void OnSelectionTextureShiftup1u();
   void OnGridNext();
   void OnGridPrev();
   void OnSelectionTextureScaleLeft();
