@@ -7400,25 +7400,31 @@ void MainFrame::OnSelectionTextureShiftdown()
   Select_ShiftTexture(0, (int)-g_qeglobals.d_savedinfo.m_SIIncrement.shift[1]);
 }
 
-// AEon: Shift texture by 1u = 1
+// AEon: Shift texture by current Grid Size (was 1u = 1)
+//       Test: Using the current grid size as shift increment, 
+//             Subgrid 0.25f & 0.5f will NOT shift offset (= 0)!
 void MainFrame::OnSelectionTextureShiftleft1u()
 {
-  Select_ShiftTexture(-1, 0);
+//  Select_ShiftTexture(-1, 0);
+  Select_ShiftTexture((int)-g_qeglobals.d_gridsize, 0);
 }
 
 void MainFrame::OnSelectionTextureShiftright1u()
 {
-  Select_ShiftTexture(1, 0);
+//  Select_ShiftTexture(1, 0);
+  Select_ShiftTexture((int)g_qeglobals.d_gridsize, 0);
 }
 
 void MainFrame::OnSelectionTextureShiftup1u()
 {
-  Select_ShiftTexture(0, 1);
+//  Select_ShiftTexture(0, 1);
+  Select_ShiftTexture(0, (int)g_qeglobals.d_gridsize);
 }
 
 void MainFrame::OnSelectionTextureShiftdown1u()
 {
-  Select_ShiftTexture(0, -1);
+//  Select_ShiftTexture(0, -1);
+  Select_ShiftTexture(0, (int)-g_qeglobals.d_gridsize);
 }
 
 void MainFrame::OnGridPrev()
