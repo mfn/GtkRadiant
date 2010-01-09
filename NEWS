@@ -4,8 +4,10 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ Add undo protection to texture rotation, scaling and shifting
+
 + Patches by AEon:
-  - Allow CTRL-SHIFT cursor keys to shift textures always by one unit
+  - Allow CTRL-SHIFT cursor keys to shift textures always by one grid unit
   - Support numeric keypad keys for changing the grid
 
 + Always mark a map as modified after an undo-able action
