@@ -878,6 +878,8 @@ void MainFrame::process_xlink (Str &FileName, const char *menu_name, const char 
     Sys_Printf("Processing .xlink file '%s'\n", FileName.GetBuffer());
     // create sub menu
     GtkWidget* menu_in_menu = create_menu_in_menu_with_mnemonic(menu, menu_name);
+    if (g_PrefsDlg.m_bDetachableMenus)
+        menu_tearoff (menu_in_menu);
     // start walking the nodes, find the 'links' one
     xmlNodePtr pNode = pDoc->children;
     while (pNode && strcmp((const char*)pNode->name, "links"))
@@ -1056,6 +1058,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
     menu_tearoff (menu);
 
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Toggle"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Camera View"), GTK_SIGNAL_FUNC (HandleCommand), ID_TOGGLECAMERA);
   create_menu_item_with_mnemonic (menu_in_menu, _("Console View"), GTK_SIGNAL_FUNC (HandleCommand), ID_TOGGLECONSOLE);
   item = create_menu_item_with_mnemonic (menu_in_menu, _("Entity View"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_ENTITY);
@@ -1073,10 +1077,14 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   menu_separator (menu);
   item = create_menu_item_with_mnemonic (menu, _("_Next (XY, YZ, XY)"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_NEXTVIEW);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Layout"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("XY (Top)"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_XY);
   create_menu_item_with_mnemonic (menu_in_menu, _("YZ"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_SIDE);
   create_menu_item_with_mnemonic (menu_in_menu, _("XZ"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_FRONT);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Zoom"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("_XY 100%"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_100);
   item = create_menu_item_with_mnemonic (menu_in_menu, _("XY Zoom _In"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_ZOOMIN);
   item = create_menu_item_with_mnemonic (menu_in_menu, _("XY Zoom _Out"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_ZOOMOUT);
@@ -1092,6 +1100,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   menu_separator (menu);
 
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Show"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   item = create_check_menu_item_with_mnemonic (menu_in_menu, _("Show _Angles"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_SHOWANGLES, FALSE);
   g_object_set_data (G_OBJECT (window), "menu_view_showangles", item);
   item = create_check_menu_item_with_mnemonic (menu_in_menu, _("Show _Names"), GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_SHOWNAMES, TRUE);
@@ -1110,6 +1120,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   g_object_set_data (G_OBJECT (window), "menu_view_showworkzone", item);
 
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Filter"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_check_menu_item_with_mnemonic (menu_in_menu, _("World"), GTK_SIGNAL_FUNC (HandleCommand), ID_FILTER_WORLD, FALSE);
   create_check_menu_item_with_mnemonic (menu_in_menu, _("Entities"), GTK_SIGNAL_FUNC (HandleCommand), ID_FILTER_ENTITIES, FALSE);
   create_check_menu_item_with_mnemonic (menu_in_menu, _("Areaportals"), GTK_SIGNAL_FUNC (HandleCommand), ID_FILTER_AREAPORTALS, FALSE);
@@ -1132,12 +1144,16 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Hide/Show"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Hide Selected"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_HIDESHOW_HIDESELECTED);
   create_menu_item_with_mnemonic (menu_in_menu, _("Show Hidden"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_HIDESHOW_SHOWHIDDEN);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Entities as"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   g_object_set_data (G_OBJECT (window), "view_entitiesas_menu", menu_in_menu);
   item = create_radio_menu_item_with_mnemonic (menu_in_menu, NULL, _("Bounding box"),
                                  GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_ENTITIESAS_BOUNDINGBOX,FALSE);
@@ -1172,6 +1188,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
     menu_tearoff (menu);
 
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Drag"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Drag _Edges"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_DRAGEDGES);
   create_menu_item_with_mnemonic (menu_in_menu, _("Drag _Vertices"),
@@ -1189,6 +1207,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 #endif
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Flip"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Flip _X"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_BRUSH_FLIPX);
   create_menu_item_with_mnemonic (menu_in_menu, _("Flip _Y"),
@@ -1197,6 +1217,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
                     GTK_SIGNAL_FUNC (HandleCommand), ID_BRUSH_FLIPZ);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Rotate"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Rotate X"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_BRUSH_ROTATEX);
   create_menu_item_with_mnemonic (menu_in_menu, _("Rotate Y"),
@@ -1208,6 +1230,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   menu_separator (menu);
   create_menu_item_with_mnemonic (menu, _("Scale..."), GTK_SIGNAL_FUNC (HandleCommand), ID_SELECT_SCALE);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("CSG"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Make _Hollow"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_MAKEHOLLOW);
   create_menu_item_with_mnemonic (menu_in_menu, _("CSG _Subtract"),
@@ -1216,6 +1240,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
                     GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_CSGMERGE);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Select"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Select Complete _Tall"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_SELECTCOMPLETETALL);
   create_menu_item_with_mnemonic (menu_in_menu, _("Select T_ouching"),
@@ -1237,6 +1263,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 #endif
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Clipper"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Toggle Clipper"),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_VIEW_CLIPPER);
   menu_separator (menu_in_menu);
@@ -1334,6 +1362,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 			   GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_INSPECTOR);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Render Quality"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   g_object_set_data (G_OBJECT (window), "render_quality_menu", menu_in_menu);
   item = create_radio_menu_item_with_mnemonic (menu_in_menu, NULL, _("_Wireframe"),
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_WIREFRAME, FALSE);
@@ -1363,6 +1393,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURE_REPLACEALL);
 
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Texture Lock"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   item = create_check_menu_item_with_mnemonic (menu_in_menu, _("Moves"),
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TOGGLE_LOCK, TRUE);
   g_object_set_data (G_OBJECT (window), "menu_toggle_lock", item);
@@ -1370,6 +1402,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TOGGLE_ROTATELOCK, TRUE);
   g_object_set_data (G_OBJECT (window), "menu_toggle_rotatelock", item);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Texture Window Scale"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   item = create_radio_menu_item_with_mnemonic (menu_in_menu, NULL, _("200%"),
 				 GTK_SIGNAL_FUNC (HandleCommand), ID_TEXTURES_TEXTUREWINDOWSCALE_200, FALSE);
   g_object_set_data (G_OBJECT (window), "menu_textures_texturewindowscale_200", item);
@@ -1404,7 +1438,11 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 
   create_menu_item_with_mnemonic (menu, _("_Benchmark"), GTK_SIGNAL_FUNC (HandleCommand), ID_MISC_BENCHMARK);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Colors"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   menu_3 = create_menu_in_menu_with_mnemonic (menu_in_menu, _("Themes"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_3);
   create_menu_item_with_mnemonic (menu_3, _("QE4 Original"), GTK_SIGNAL_FUNC (HandleCommand), ID_COLOR_SETORIGINAL);
   create_menu_item_with_mnemonic (menu_3, _("Q3Radiant Original"), GTK_SIGNAL_FUNC (HandleCommand), ID_COLOR_SETQER);
   create_menu_item_with_mnemonic (menu_3, _("Black and Green"), GTK_SIGNAL_FUNC (HandleCommand), ID_COLOR_SETBLACK);
@@ -1486,6 +1524,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
                     GTK_SIGNAL_FUNC (HandleCommand), ID_BRUSH_ARBITRARYSIDED);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Primitives"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Cone..."),
                     GTK_SIGNAL_FUNC (HandleCommand), ID_BRUSH_MAKECONE);
   create_menu_item_with_mnemonic (menu_in_menu, _("Sphere..."),
@@ -1500,6 +1540,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 
   create_menu_item_with_mnemonic (menu, _("Cylinder"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_PATCHTUBE);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("More Cylinders"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Dense Cylinder"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_PATCHDENSETUBE);
   create_menu_item_with_mnemonic (menu_in_menu, _("Very Dense Cylinder"),
@@ -1510,6 +1552,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   create_menu_item_with_mnemonic (menu, _("End cap"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_PATCHENDCAP);
   create_menu_item_with_mnemonic (menu, _("Bevel"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_PATCHBEVEL);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("More End caps, Bevels"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Square Endcap"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_MOREENDCAPSBEVELS_SQUAREBEVEL);
   create_menu_item_with_mnemonic (menu_in_menu, _("Square Bevel"),
@@ -1525,6 +1569,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   g_object_set_data (G_OBJECT (window), "menu_simplepatchmesh", item);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Insert"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Insert (2) Columns"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_INSERT_INSERTCOLUMN);
   create_menu_item_with_mnemonic (menu_in_menu, _("Add (2) Columns"),
@@ -1535,6 +1581,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   create_menu_item_with_mnemonic (menu_in_menu, _("Add (2) Rows"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_INSERT_ADDROW);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Delete"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("First (2) Columns"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_DELETE_FIRSTCOLUMN);
   create_menu_item_with_mnemonic (menu_in_menu, _("Last (2) Columns"),
@@ -1546,9 +1594,13 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_DELETE_LASTROW);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Matrix"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Invert"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_NEGATIVE);
   menu_3 = create_menu_in_menu_with_mnemonic (menu_in_menu, _("Re-disperse"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_3);
   create_menu_item_with_mnemonic (menu_3, _("Rows"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_REDISPERSE_ROWS);
   create_menu_item_with_mnemonic (menu_3, _("Cols (Intermediate)"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_REDISPERSE_INTERMEDIATE_COLS);
   create_menu_item_with_mnemonic (menu_3, _("Rows (Intermediate)"), GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_REDISPERSE_INTERMEDIATE_ROWS);
@@ -1561,6 +1613,8 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
 			GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_CYCLECAP);
   menu_separator (menu);
   menu_in_menu = create_menu_in_menu_with_mnemonic (menu, _("Overlay"));
+  if (g_PrefsDlg.m_bDetachableMenus)
+    menu_tearoff (menu_in_menu);
   create_menu_item_with_mnemonic (menu_in_menu, _("Set"),
 		    GTK_SIGNAL_FUNC (HandleCommand), ID_CURVE_OVERLAY_SET);
   create_menu_item_with_mnemonic (menu_in_menu, _("Clear"),
@@ -4086,6 +4140,8 @@ void MainFrame::AddPlugInMenuItem(IPlugIn* pPlugIn)
   if (nCount > 0)
   {
     menu = gtk_menu_new ();
+    if (g_PrefsDlg.m_bDetachableMenus)
+      menu_tearoff (menu);
     while (nCount > 0)
     {
       menuText = pPlugIn->getCommand(--nCount);

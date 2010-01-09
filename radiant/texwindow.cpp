@@ -649,6 +649,8 @@ void FillTextureMenu (GSList** pArray)
       {
 	      GtkWidget *pSubMenu = gtk_menu_new ();
         GtkWidget *pSubMenuRef = pSubMenu;
+	      if (g_PrefsDlg.m_bDetachableMenus)
+	        menu_tearoff (pSubMenuRef);
 	      // keep going...
 	      do
 	      {
