@@ -411,10 +411,10 @@ struct SKeyInfo
 
 #define ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG 40238
 #define ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG 40239
-#define ID_SELECTION_TEXTURE_SHIFTLEFT_1U  40240
-#define ID_SELECTION_TEXTURE_SHIFTRIGHT_1U 40241
-#define ID_SELECTION_TEXTURE_SHIFTUP_1U    40242
-#define ID_SELECTION_TEXTURE_SHIFTDOWN_1U  40243
+#define ID_SELECTION_TEXTURE_SHIFTLEFT_1GU  40240
+#define ID_SELECTION_TEXTURE_SHIFTRIGHT_1GU 40241
+#define ID_SELECTION_TEXTURE_SHIFTUP_1GU    40242
+#define ID_SELECTION_TEXTURE_SHIFTDOWN_1GU  40243
 
 // those must have their own ID chunk ID_GRID_025 <= ID_GRID <= ID_GRID_256
 #define ID_GRID_025                     40300
@@ -767,10 +767,10 @@ public:
   void OnSelectionTextureShiftleft();
   void OnSelectionTextureShiftright();
   void OnSelectionTextureShiftup();
-  void OnSelectionTextureShiftdown1u();
-  void OnSelectionTextureShiftleft1u();
-  void OnSelectionTextureShiftright1u();
-  void OnSelectionTextureShiftup1u();
+  void OnSelectionTextureShiftdown1gu();
+  void OnSelectionTextureShiftleft1gu();
+  void OnSelectionTextureShiftright1gu();
+  void OnSelectionTextureShiftup1gu();
   void OnGridNext();
   void OnGridPrev();
   void OnSelectionTextureScaleLeft();
