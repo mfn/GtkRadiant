@@ -229,16 +229,18 @@ SCommandInfo g_Commands[] =
   {"ZZoomIn", GDK_Delete, 0x04, ID_VIEW_ZZOOMIN, "menu_view_zzoomin"},
   {"TexRotateClock", GDK_Next, 0x01, ID_SELECTION_TEXTURE_ROTATECLOCK, "menu_selection_texture_rotateclock"},
   {"TexRotateCounter", GDK_Prior, 0x01, ID_SELECTION_TEXTURE_ROTATECOUNTER, "menu_selection_texture_rotatecounter"},
+  {"TexRotateClock1deg", GDK_Next, 0x05, ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG, "menu_selection_texture_rotateclock_1deg"},
+  {"TexRotateCounter1deg", GDK_Prior, 0x05, ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG, "menu_selection_texture_rotatecounter_1deg"},
   {"TexScaleUp", GDK_Up, 0x04, ID_SELECTION_TEXTURE_SCALEUP, "menu_selection_texture_scaleup"},
   {"TexScaleDown", GDK_Down, 0x04, ID_SELECTION_TEXTURE_SCALEDOWN, "menu_selection_texture_scaledown"},
   {"TexShiftLeft", GDK_Left, 0x01, ID_SELECTION_TEXTURE_SHIFTLEFT, "menu_selection_texture_shiftleft"},
   {"TexShiftRight", GDK_Right, 0x01, ID_SELECTION_TEXTURE_SHIFTRIGHT, "menu_selection_texture_shiftright"},
   {"TexShiftUp", GDK_Up, 0x01, ID_SELECTION_TEXTURE_SHIFTUP, "menu_selection_texture_shiftup"},
   {"TexShiftDown", GDK_Down, 0x01, ID_SELECTION_TEXTURE_SHIFTDOWN, "menu_selection_texture_shiftdown"},
-  {"TexShiftLeft1u", GDK_Left, 0x05, ID_SELECTION_TEXTURE_SHIFTLEFT_1U, "menu_selection_texture_shiftleft_1u"},
-  {"TexShiftRight1u", GDK_Right, 0x05, ID_SELECTION_TEXTURE_SHIFTRIGHT_1U, "menu_selection_texture_shiftright_1u"},
-  {"TexShiftUp1u", GDK_Up, 0x05, ID_SELECTION_TEXTURE_SHIFTUP_1U, "menu_selection_texture_shiftup_1u"},
-  {"TexShiftDown1u", GDK_Down, 0x05, ID_SELECTION_TEXTURE_SHIFTDOWN_1U, "menu_selection_texture_shiftdown_1u"},
+  {"TexShiftLeft1gu", GDK_Left, 0x05, ID_SELECTION_TEXTURE_SHIFTLEFT_1GU, "menu_selection_texture_shiftleft_1gu"},
+  {"TexShiftRight1gu", GDK_Right, 0x05, ID_SELECTION_TEXTURE_SHIFTRIGHT_1GU, "menu_selection_texture_shiftright_1gu"},
+  {"TexShiftUp1gu", GDK_Up, 0x05, ID_SELECTION_TEXTURE_SHIFTUP_1GU, "menu_selection_texture_shiftup_1gu"},
+  {"TexShiftDown1gu", GDK_Down, 0x05, ID_SELECTION_TEXTURE_SHIFTDOWN_1GU, "menu_selection_texture_shiftdown_1gu"},
   {"GridDown", '[', 0x00, ID_GRID_PREV, "menu_grid_prev"},
   {"GridUp", ']', 0x00, ID_GRID_NEXT, "menu_grid_next"},
   {"TexScaleLeft", GDK_Left, 0x04, ID_SELECTION_TEXTURE_SCALELEFT, "menu_selection_texture_scaleleft"},
@@ -675,16 +677,18 @@ gint HandleCommand (GtkWidget *widget, gpointer data)
     case ID_SELECTION_TEXTURE_FIT: g_pParentWnd->OnSelectionTextureFit (); break;
     case ID_SELECTION_TEXTURE_ROTATECLOCK: g_pParentWnd->OnSelectionTextureRotateclock (); break;
     case ID_SELECTION_TEXTURE_ROTATECOUNTER: g_pParentWnd->OnSelectionTextureRotatecounter (); break;
+    case ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG: g_pParentWnd->OnSelectionTextureRotateclock1deg (); break;
+    case ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG: g_pParentWnd->OnSelectionTextureRotatecounter1deg (); break;
     case ID_SELECTION_TEXTURE_SCALEUP: g_pParentWnd->OnSelectionTextureScaleup (); break;
     case ID_SELECTION_TEXTURE_SCALEDOWN: g_pParentWnd->OnSelectionTextureScaledown (); break;
     case ID_SELECTION_TEXTURE_SHIFTLEFT: g_pParentWnd->OnSelectionTextureShiftleft (); break;
     case ID_SELECTION_TEXTURE_SHIFTRIGHT: g_pParentWnd->OnSelectionTextureShiftright (); break;
     case ID_SELECTION_TEXTURE_SHIFTUP: g_pParentWnd->OnSelectionTextureShiftup (); break;
     case ID_SELECTION_TEXTURE_SHIFTDOWN: g_pParentWnd->OnSelectionTextureShiftdown (); break;
-	case ID_SELECTION_TEXTURE_SHIFTLEFT_1U: g_pParentWnd->OnSelectionTextureShiftleft1u (); break;
-    case ID_SELECTION_TEXTURE_SHIFTRIGHT_1U: g_pParentWnd->OnSelectionTextureShiftright1u (); break;
-    case ID_SELECTION_TEXTURE_SHIFTUP_1U: g_pParentWnd->OnSelectionTextureShiftup1u (); break;
-    case ID_SELECTION_TEXTURE_SHIFTDOWN_1U: g_pParentWnd->OnSelectionTextureShiftdown1u (); break;
+    case ID_SELECTION_TEXTURE_SHIFTLEFT_1GU: g_pParentWnd->OnSelectionTextureShiftleft1gu (); break;
+    case ID_SELECTION_TEXTURE_SHIFTRIGHT_1GU: g_pParentWnd->OnSelectionTextureShiftright1gu (); break;
+    case ID_SELECTION_TEXTURE_SHIFTUP_1GU: g_pParentWnd->OnSelectionTextureShiftup1gu (); break;
+    case ID_SELECTION_TEXTURE_SHIFTDOWN_1GU: g_pParentWnd->OnSelectionTextureShiftdown1gu (); break;
     case ID_GRID_PREV: g_pParentWnd->OnGridPrev (); break;
     case ID_GRID_NEXT: g_pParentWnd->OnGridNext (); break;
     case ID_SELECTION_TEXTURE_SCALELEFT: g_pParentWnd->OnSelectionTextureScaleLeft (); break;
@@ -1640,16 +1644,18 @@ void MainFrame::create_main_menu (GtkWidget *window, GtkWidget *vbox)
   create_menu_item_with_mnemonic (menu, "MouseRotate", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECT_MOUSEROTATE);
   create_menu_item_with_mnemonic (menu, "TexRotateClock", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECLOCK);
   create_menu_item_with_mnemonic (menu, "TexRotateCounter", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECOUNTER);
+  create_menu_item_with_mnemonic (menu, "TexRotateClock1deg", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECLOCK_1DEG);
+  create_menu_item_with_mnemonic (menu, "TexRotateCounter1deg", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_ROTATECOUNTER_1DEG);
   create_menu_item_with_mnemonic (menu, "TexScaleUp", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALEUP);
   create_menu_item_with_mnemonic (menu, "TexScaleDown", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALEDOWN);
   create_menu_item_with_mnemonic (menu, "TexShiftLeft", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTLEFT);
   create_menu_item_with_mnemonic (menu, "TexShiftRight", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTRIGHT);
   create_menu_item_with_mnemonic (menu, "TexShiftUp", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTUP);
   create_menu_item_with_mnemonic (menu, "TexShiftDown", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTDOWN);
-  create_menu_item_with_mnemonic (menu, "TexShiftLeft1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTLEFT_1U);
-  create_menu_item_with_mnemonic (menu, "TexShiftRight1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTRIGHT_1U);
-  create_menu_item_with_mnemonic (menu, "TexShiftUp1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTUP_1U);
-  create_menu_item_with_mnemonic (menu, "TexShiftDown1u", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTDOWN_1U);
+  create_menu_item_with_mnemonic (menu, "TexShiftLeft1gu", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTLEFT_1GU);
+  create_menu_item_with_mnemonic (menu, "TexShiftRight1gu", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTRIGHT_1GU);
+  create_menu_item_with_mnemonic (menu, "TexShiftUp1gu", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTUP_1GU);
+  create_menu_item_with_mnemonic (menu, "TexShiftDown1gu", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SHIFTDOWN_1GU);
   create_menu_item_with_mnemonic (menu, "GridDown", GTK_SIGNAL_FUNC (HandleCommand), ID_GRID_PREV);
   create_menu_item_with_mnemonic (menu, "GridUp", GTK_SIGNAL_FUNC (HandleCommand), ID_GRID_NEXT);
   create_menu_item_with_mnemonic (menu, "TexScaleLeft", GTK_SIGNAL_FUNC (HandleCommand), ID_SELECTION_TEXTURE_SCALELEFT);
@@ -7156,7 +7162,7 @@ void MainFrame::OnSelectFuncGroup()
 	// check to see if the selected brush is part of a func group
 	// if it is, deselect everything and reselect the next brush 
 	// in the group
-	brush_t *b2, *b = selected_brushes.next;
+	brush_t *b = selected_brushes.next;
 	entity_t * e;
 	if (b != &selected_brushes)
 	{
@@ -7352,73 +7358,229 @@ void MainFrame::OnViewCrosshair()
 
 void MainFrame::OnSelectionTextureRotateclock()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture rotate clockwise");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_RotateTexture(abs(g_PrefsDlg.m_nRotation));
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureRotatecounter()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture rotate counterclockwise");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_RotateTexture(-abs(g_PrefsDlg.m_nRotation));
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
+}
+
+// AEon: Fixed texture rotation by 1 degree
+void MainFrame::OnSelectionTextureRotateclock1deg()
+{
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture rotate clockwise 1 degree");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_RotateTexture(1);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
+}
+
+void MainFrame::OnSelectionTextureRotatecounter1deg()
+{
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture rotate counterclockwise 1 degree");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_RotateTexture(-1);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureScaleup()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture scale up");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ScaleTexture(0, g_qeglobals.d_savedinfo.m_SIIncrement.scale[1]);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureScaledown()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture scale down");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ScaleTexture(0, -g_qeglobals.d_savedinfo.m_SIIncrement.scale[1]);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureScaleLeft()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture scale left");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ScaleTexture(-g_qeglobals.d_savedinfo.m_SIIncrement.scale[0],0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureScaleRight()
 {
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture scale right");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ScaleTexture(g_qeglobals.d_savedinfo.m_SIIncrement.scale[0],0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureShiftleft()
 {
+  if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[0])
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift left");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ShiftTexture((int)-g_qeglobals.d_savedinfo.m_SIIncrement.shift[0], 0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureShiftright()
 {
+  if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[0])
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift right");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ShiftTexture((int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[0], 0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureShiftup()
 {
+  if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[1])
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift up");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ShiftTexture(0, (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[1]);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnSelectionTextureShiftdown()
 {
+  if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[1])
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift down");
+  Undo_AddBrushList(&selected_brushes);
+
   Select_ShiftTexture(0, (int)-g_qeglobals.d_savedinfo.m_SIIncrement.shift[1]);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
-// AEon: Shift texture by 1u = 1
-void MainFrame::OnSelectionTextureShiftleft1u()
+// AEon: Shift texture by current Grid Size
+// mfn: grid size < 1 will not shift, as integer rounding results in 0 offset
+void MainFrame::OnSelectionTextureShiftleft1gu()
 {
-  Select_ShiftTexture(-1, 0);
+  if (0 == (int)g_qeglobals.d_gridsize)
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift left one grid unit");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_ShiftTexture((int)-g_qeglobals.d_gridsize, 0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
-void MainFrame::OnSelectionTextureShiftright1u()
+void MainFrame::OnSelectionTextureShiftright1gu()
 {
-  Select_ShiftTexture(1, 0);
+  if (0 == (int)g_qeglobals.d_gridsize)
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift right one grid unit");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_ShiftTexture((int)g_qeglobals.d_gridsize, 0);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
-void MainFrame::OnSelectionTextureShiftup1u()
+void MainFrame::OnSelectionTextureShiftup1gu()
 {
-  Select_ShiftTexture(0, 1);
+  if (0 == (int)g_qeglobals.d_gridsize)
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift up one grid unit");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_ShiftTexture(0, (int)g_qeglobals.d_gridsize);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
-void MainFrame::OnSelectionTextureShiftdown1u()
+void MainFrame::OnSelectionTextureShiftdown1gu()
 {
-  Select_ShiftTexture(0, -1);
+  if (0 == (int)g_qeglobals.d_gridsize)
+    return;
+  if (&selected_brushes == selected_brushes.next)
+    return;
+  Undo_Start("texture shift down one grid unit");
+  Undo_AddBrushList(&selected_brushes);
+
+  Select_ShiftTexture(0, (int)-g_qeglobals.d_gridsize);
+
+  Undo_EndBrushList(&selected_brushes);
+  Undo_End();
 }
 
 void MainFrame::OnGridPrev()
