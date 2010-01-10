@@ -2844,7 +2844,8 @@ void DoCommandListDlg ()
       cmds = g_slist_sort (cmds, (gint (*)(const void *, const void *))strcmp);
 
       Sys_Printf("Writing the command list to %s", path.GetBuffer() );
-      FILE* fileout = fopen (path.GetBuffer (), "wt");
+      // mfn via AEon: on windows commandlist.txt contains \r\r\n at end of each line, changing 't'ranslation mode to 'b'inary
+      FILE* fileout = fopen (path.GetBuffer (), "wb");
 
       while (cmds)
       {
