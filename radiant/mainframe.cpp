@@ -7414,7 +7414,7 @@ void MainFrame::OnViewCrosshair()
 
 void MainFrame::OnSelectionTextureRotateclock()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture rotate clockwise");
   Undo_AddBrushList(&selected_brushes);
@@ -7427,7 +7427,7 @@ void MainFrame::OnSelectionTextureRotateclock()
 
 void MainFrame::OnSelectionTextureRotatecounter()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture rotate counterclockwise");
   Undo_AddBrushList(&selected_brushes);
@@ -7441,7 +7441,7 @@ void MainFrame::OnSelectionTextureRotatecounter()
 // AEon: Fixed texture rotation by 1 degree
 void MainFrame::OnSelectionTextureRotateclock1deg()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture rotate clockwise 1 degree");
   Undo_AddBrushList(&selected_brushes);
@@ -7454,7 +7454,7 @@ void MainFrame::OnSelectionTextureRotateclock1deg()
 
 void MainFrame::OnSelectionTextureRotatecounter1deg()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture rotate counterclockwise 1 degree");
   Undo_AddBrushList(&selected_brushes);
@@ -7467,7 +7467,7 @@ void MainFrame::OnSelectionTextureRotatecounter1deg()
 
 void MainFrame::OnSelectionTextureScaleup()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture scale up");
   Undo_AddBrushList(&selected_brushes);
@@ -7480,7 +7480,7 @@ void MainFrame::OnSelectionTextureScaleup()
 
 void MainFrame::OnSelectionTextureScaledown()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture scale down");
   Undo_AddBrushList(&selected_brushes);
@@ -7493,7 +7493,7 @@ void MainFrame::OnSelectionTextureScaledown()
 
 void MainFrame::OnSelectionTextureScaleLeft()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture scale left");
   Undo_AddBrushList(&selected_brushes);
@@ -7506,7 +7506,7 @@ void MainFrame::OnSelectionTextureScaleLeft()
 
 void MainFrame::OnSelectionTextureScaleRight()
 {
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture scale right");
   Undo_AddBrushList(&selected_brushes);
@@ -7521,7 +7521,7 @@ void MainFrame::OnSelectionTextureShiftleft()
 {
   if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[0])
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift left");
   Undo_AddBrushList(&selected_brushes);
@@ -7536,7 +7536,7 @@ void MainFrame::OnSelectionTextureShiftright()
 {
   if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[0])
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift right");
   Undo_AddBrushList(&selected_brushes);
@@ -7551,7 +7551,7 @@ void MainFrame::OnSelectionTextureShiftup()
 {
   if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[1])
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift up");
   Undo_AddBrushList(&selected_brushes);
@@ -7566,7 +7566,7 @@ void MainFrame::OnSelectionTextureShiftdown()
 {
   if (0 == (int)g_qeglobals.d_savedinfo.m_SIIncrement.shift[1])
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift down");
   Undo_AddBrushList(&selected_brushes);
@@ -7583,7 +7583,7 @@ void MainFrame::OnSelectionTextureShiftleft1gu()
 {
   if (0 == (int)g_qeglobals.d_gridsize)
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift left one grid unit");
   Undo_AddBrushList(&selected_brushes);
@@ -7598,7 +7598,7 @@ void MainFrame::OnSelectionTextureShiftright1gu()
 {
   if (0 == (int)g_qeglobals.d_gridsize)
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift right one grid unit");
   Undo_AddBrushList(&selected_brushes);
@@ -7613,7 +7613,7 @@ void MainFrame::OnSelectionTextureShiftup1gu()
 {
   if (0 == (int)g_qeglobals.d_gridsize)
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift up one grid unit");
   Undo_AddBrushList(&selected_brushes);
@@ -7628,7 +7628,7 @@ void MainFrame::OnSelectionTextureShiftdown1gu()
 {
   if (0 == (int)g_qeglobals.d_gridsize)
     return;
-  if (&selected_brushes == selected_brushes.next)
+  if(selected_brushes.next == &selected_brushes && g_ptrSelectedFaces.GetSize() == 0)
     return;
   Undo_Start("texture shift down one grid unit");
   Undo_AddBrushList(&selected_brushes);
