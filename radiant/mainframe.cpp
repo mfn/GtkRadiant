@@ -4218,7 +4218,9 @@ void MainFrame::OnSelectionSelectNudgedown()
 	  return;
   Undo_Start("nudge down");
   Undo_AddBrushList(&selected_brushes);
+
   NudgeSelection(3, g_qeglobals.d_gridsize);
+
   Undo_EndBrushList(&selected_brushes);
   Undo_End();
 }
@@ -4229,7 +4231,9 @@ void MainFrame::OnSelectionSelectNudgeleft()
 	  return;
   Undo_Start("nudge left");
   Undo_AddBrushList(&selected_brushes);
+
   NudgeSelection(0, g_qeglobals.d_gridsize);
+
   Undo_EndBrushList(&selected_brushes);
   Undo_End();
 }
@@ -4240,7 +4244,9 @@ void MainFrame::OnSelectionSelectNudgeright()
 	  return;
   Undo_Start("nudge right");
   Undo_AddBrushList(&selected_brushes);
+
   NudgeSelection(2, g_qeglobals.d_gridsize);
+
   Undo_EndBrushList(&selected_brushes);
   Undo_End();
 }
@@ -4251,7 +4257,9 @@ void MainFrame::OnSelectionSelectNudgeup()
 	  return;
   Undo_Start("nudge up");
   Undo_AddBrushList(&selected_brushes);
+
   NudgeSelection(1, g_qeglobals.d_gridsize);
+
   Undo_EndBrushList(&selected_brushes);
   Undo_End();
 }
