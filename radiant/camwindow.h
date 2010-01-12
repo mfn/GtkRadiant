@@ -86,7 +86,7 @@ private:
     const int y = (int)m_rectangle.y;
     const int w = (int)m_rectangle.w;
     const int h = (int)m_rectangle.h;
-    gdk_draw_rectangle(m_widget->window, m_gc, TRUE, x, -(h) - (y - m_widget->allocation.height), w, h);
+    gdk_draw_rectangle(m_widget->window, m_gc, FALSE, x, -(h) - (y - m_widget->allocation.height), w, h);
   }
 
   rectangle_t m_rectangle;
