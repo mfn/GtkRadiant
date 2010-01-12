@@ -1036,7 +1036,7 @@ rectangle_t rectangle_from_area_xy()
 void update_xor_rectangle_xy(XORRectangle& xor_rectangle)
 {
   rectangle_t rectangle;
-    if ((g_qeglobals.d_select_mode == sel_area))
+    if ((g_qeglobals.d_select_mode == sel_area) || (g_qeglobals.d_select_mode == sel_areatall) || (g_qeglobals.d_select_mode == sel_brush_area_partial_tall))
     rectangle = rectangle_from_area_xy();
   xor_rectangle.set(rectangle);
 }
@@ -1729,7 +1729,7 @@ void XYWnd::XY_MouseMoved (int x, int y, int buttons)
   }
 
   // lbutton without selection = drag new brush
-  if (m_nButtonstate == MK_LBUTTON && !m_bPress_selection && g_qeglobals.d_select_mode != sel_curvepoint && g_qeglobals.d_select_mode != sel_areatall)
+  if (m_nButtonstate == MK_LBUTTON && !m_bPress_selection && g_qeglobals.d_select_mode != sel_curvepoint && g_qeglobals.d_select_mode != sel_areatall && g_qeglobals.d_select_mode != sel_brush_area_partial_tall)
   {
     NewBrushDrag (x, y);
     return;
@@ -1740,7 +1740,7 @@ void XYWnd::XY_MouseMoved (int x, int y, int buttons)
   if (m_nButtonstate & MK_LBUTTON)
   {
     Drag_MouseMoved (x, y, buttons);
-    if(g_qeglobals.d_select_mode != sel_area)
+	if(g_qeglobals.d_select_mode != sel_area && g_qeglobals.d_select_mode != sel_areatall && g_qeglobals.d_select_mode != sel_brush_area_partial_tall)
       Sys_UpdateWindows (W_XY_OVERLAY | W_CAMERA_IFON | W_Z);
     return;
   }
@@ -3372,7 +3372,7 @@ void XYWnd::XY_Draw()
     qglPopMatrix();
 #if 0
   // area selection hack
-  if ((g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall) && (g_nPatchClickedView == ((m_nViewType == XY) ? W_XY : (m_nViewType == YZ) ? W_YZ : W_XZ)))
+  if ((g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall) && (g_nPatchClickedView == ((m_nViewType == XY) ? W_XY : (m_nViewType == YZ) ? W_YZ : W_XZ)))
   {
     qglEnable (GL_BLEND);
     qglPolygonMode (GL_FRONT_AND_BACK, GL_FILL);

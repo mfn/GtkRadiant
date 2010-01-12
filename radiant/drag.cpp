@@ -134,7 +134,7 @@ void Drag_Setup (int x, int y, int buttons,
     g_qeglobals.d_num_move_points = 0;
   }
 
-  if (g_qeglobals.d_select_mode == sel_areatall)
+  if (g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall)
   {
     VectorCopy(origin, g_qeglobals.d_vAreaTL);
     VectorCopy(origin, g_qeglobals.d_vAreaBR);
@@ -309,6 +309,18 @@ Drag_Begin
 //++timo test three button mouse and three button emulation here ?
 ===========
 */
+
+// mfn TODO: this is really ugly: the shift-LBUTTON (brush selection) code had
+// to be moved into Drag_MouseUp() so we can detect shift-LBUTTON drags (with
+// modifiers SHIFT or ALT) to switch to area selection mode. However the
+// necessary information for the shift-LBUTTON brush selection isn't available
+// there, in case it was no drag. Thus we store all required information in
+// these variables, which are then only used in Drag_MouseUp() in this specific
+// case.
+static bool drag_done; // state whether there was a drag attempt or not. it's false and only gets set to true in Drag_MouseMoved() and to be checked in Drag_MouseUp() later
+static bool l_sf_camera; // Variable to transport value from Drag_Begin() to Drag_MouseUp()
+static vec3_t l_origin, l_dir; // Variables to transport value from Drag_Begin() to Drag_MouseUp()
+
 void Drag_Begin (int x, int y, int buttons,
 		   vec3_t xaxis, vec3_t yaxis,
 		   vec3_t origin, vec3_t dir, bool sf_camera)
@@ -326,18 +338,12 @@ void Drag_Begin (int x, int y, int buttons,
 
   altdown = Sys_AltDown();
 
-	// shift-LBUTTON = select entire brush
-  // shift-alt-LBUTTON = drill select
-	if (buttons == (MK_LBUTTON | MK_SHIFT) && g_qeglobals.d_select_mode != sel_curvepoint)
-	{
-    nFlag = altdown ? SF_CYCLE : 0;
-    if (sf_camera)
-      nFlag |= SF_CAMERA;
-    else
-      nFlag |= SF_ENTITIES_FIRST;
-    Select_Ray(origin, dir, nFlag);
-		return;
-	}
+  // store for eventual later use in Drag_MouseUp()
+  l_sf_camera = sf_camera;
+  VectorCopy (origin, l_origin);
+  VectorCopy (dir, l_dir);
+  // indicate there was no drag yet, we're still in Drag_Begin() here
+  drag_done = false;
 
   // (shift-)alt-LBUTTON = area select completely tall
   if ( !sf_camera &&
@@ -347,6 +353,18 @@ void Drag_Begin (int x, int y, int buttons,
     if (g_pParentWnd->ActiveXY()->AreaSelectOK())
     {
       g_qeglobals.d_select_mode = sel_areatall;
+
+      Drag_Setup (x, y, buttons, xaxis, yaxis, origin, dir);
+      return;
+    }
+  }
+
+  // shift-LBUTTON = area select partial tall
+  if ( !sf_camera && buttons == (MK_LBUTTON | MK_SHIFT) && g_qeglobals.d_select_mode != sel_curvepoint) 
+  {
+    if (g_pParentWnd->ActiveXY()->AreaSelectOK())
+    {
+      g_qeglobals.d_select_mode = sel_brush_area_partial_tall;
 
       Drag_Setup (x, y, buttons, xaxis, yaxis, origin, dir);
       return;
@@ -547,7 +565,7 @@ void MoveSelection (vec3_t move)
 		return;
   }
 
-  if (!(g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall))
+  if (!(g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall))
   {
     move[0] = (g_nScaleHow & SCALE_X) ? 0 : move[0];
     move[1] = (g_nScaleHow & SCALE_Y) ? 0 : move[1];
@@ -632,10 +650,10 @@ void MoveSelection (vec3_t move)
 	// this is fairly crappy way to deal with curvepoint and area selection
 	// but it touches the smallest amount of code this way
 	//
-	if (g_qeglobals.d_num_move_points || g_qeglobals.d_select_mode == sel_vertex || g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall)
+	if (g_qeglobals.d_num_move_points || g_qeglobals.d_select_mode == sel_vertex || g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall)
 	{
 		//area selection
-    if (g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall)
+    if (g_qeglobals.d_select_mode == sel_area || g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall)
 		{
 			VectorAdd(g_qeglobals.d_vAreaBR, move, g_qeglobals.d_vAreaBR);
 			return;
@@ -738,6 +756,9 @@ void Drag_MouseMoved (int x, int y, int buttons)
   vec3_t	move, delta;
   int		i;
 
+  // Now that we're in Drag_MouseMoved() it was just done -> record that
+  drag_done = true;
+
   if (!buttons)
   {
     drag_ok = false;
@@ -747,7 +768,7 @@ void Drag_MouseMoved (int x, int y, int buttons)
     return;
 
   // clear along one axis
-  if (buttons & MK_SHIFT && (g_PrefsDlg.m_bALTEdge && g_qeglobals.d_select_mode != sel_areatall))
+  if (buttons & MK_SHIFT && (g_PrefsDlg.m_bALTEdge && ( g_qeglobals.d_select_mode != sel_areatall && g_qeglobals.d_select_mode != sel_brush_area_partial_tall)))
   {
     drag_first = false;
     if (abs(x-pressx) > abs(y-pressy))
@@ -792,6 +813,21 @@ void Drag_MouseUp (int nButtons)
 {
 	Sys_Status ("Drag completed.", 0);
 
+    // shift-LBUTTON = select entire brush
+    // shift-alt-LBUTTON = drill select
+    // drag_done is only false if Drag_MouseMoved() has not been called; else it
+    // would have been an area selection, see below code
+    if (drag_done == false && nButtons == MK_SHIFT && g_qeglobals.d_select_mode != sel_curvepoint)
+    {
+        int nFlag = Sys_AltDown() ? SF_CYCLE : 0;
+        if (l_sf_camera)
+          nFlag |= SF_CAMERA;
+        else
+          nFlag |= SF_ENTITIES_FIRST;
+        Select_Ray(l_origin, l_dir, nFlag);
+        return;
+    }
+
   if (g_qeglobals.d_select_mode == sel_area)
   {
     Patch_SelectAreaPoints(nButtons & MK_CONTROL); // adds to selection and/or deselects selected points if ctrl is held
@@ -799,9 +835,12 @@ void Drag_MouseUp (int nButtons)
 		Sys_UpdateWindows (W_ALL);
   }
 
-  if (g_qeglobals.d_select_mode == sel_areatall)
+  if (g_qeglobals.d_select_mode == sel_areatall || g_qeglobals.d_select_mode == sel_brush_area_partial_tall)
   {
     vec3_t mins, maxs;
+    // Select_Deselect() changes d_select_mode state, but we still need it to
+    // determine which is the actual type of selection the user intends to do.
+    select_t orig_mode = g_qeglobals.d_select_mode;
 
     int nDim1 = (g_pParentWnd->ActiveXY()->GetViewType() == YZ) ? 1 : 0;
     int nDim2 = (g_pParentWnd->ActiveXY()->GetViewType() == XY) ? 1 : 2;
@@ -813,11 +852,14 @@ void Drag_MouseUp (int nButtons)
     maxs[nDim2] = MAX( g_qeglobals.d_vAreaTL[nDim2], g_qeglobals.d_vAreaBR[nDim2] );
 
     // deselect current selection
-    if( !(nButtons & (MK_CONTROL|MK_SHIFT)) )
+    if( !(nButtons & MK_CONTROL) )
       Select_Deselect();
 
     // select new selection
-    Select_RealCompleteTall( mins, maxs );
+    if (orig_mode == sel_areatall)
+        Select_RealCompleteTall( mins, maxs );
+    if (orig_mode == sel_brush_area_partial_tall)
+        Select_RealPartialTall( mins, maxs );
 
     Sys_UpdateWindows (W_ALL);
   }

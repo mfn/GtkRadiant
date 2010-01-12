@@ -1258,23 +1258,9 @@ void Select_CompleteTall (void)
   Sys_UpdateWindows (W_ALL);
 }
 
-void Select_PartialTall (void)
+void Select_RealPartialTall (vec3_t mins, vec3_t maxs)
 {
 	brush_t	*b, *next;
-	vec3_t	mins, maxs;
-
-	if (!QE_SingleBrush ())
-		return;
-
-  Undo_Start ("select complete tall");
-  Undo_AddBrushList (&selected_brushes);
-  Undo_End();
-
-	g_qeglobals.d_select_mode = sel_brush;
-
-	VectorCopy (selected_brushes.next->mins, mins);
-	VectorCopy (selected_brushes.next->maxs, maxs);
-	Select_Delete ();
 
   int nDim1 = (g_pParentWnd->ActiveXY()->GetViewType() == YZ) ? 1 : 0;
   int nDim2 = (g_pParentWnd->ActiveXY()->GetViewType() == XY) ? 1 : 2;
@@ -1295,6 +1281,26 @@ void Select_PartialTall (void)
 		Brush_AddToList (b, &selected_brushes);
 	}
 
+}
+
+void Select_PartialTall (void)
+{
+	vec3_t	mins, maxs;
+
+	if (!QE_SingleBrush ())
+		return;
+
+	Undo_Start ("select partial tall");
+	Undo_AddBrushList (&selected_brushes);
+	Undo_End();
+
+	g_qeglobals.d_select_mode = sel_brush;
+
+	VectorCopy (selected_brushes.next->mins, mins);
+	VectorCopy (selected_brushes.next->maxs, maxs);
+	Select_Delete ();
+
+	Select_RealPartialTall(mins, maxs);
 	Sys_UpdateWindows (W_ALL);
 }
 

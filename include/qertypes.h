@@ -798,6 +798,7 @@ typedef enum
   sel_areatall,
   sel_facets_on,
   sel_facets_off,
+  sel_brush_area_partial_tall, // mfn: newly introduced for shift-LBUTTON area selection
 } select_t;
 
 // most of the QE globals are stored in this structure
