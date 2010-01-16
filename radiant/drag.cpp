@@ -825,7 +825,7 @@ void Drag_MouseUp (int nButtons)
         else
           nFlag |= SF_ENTITIES_FIRST;
         Select_Ray(l_origin, l_dir, nFlag);
-        return;
+        Sys_UpdateWindows (W_ALL);
     }
 
   if (g_qeglobals.d_select_mode == sel_area)
