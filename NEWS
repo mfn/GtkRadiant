@@ -4,6 +4,9 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
+* Fix some torn off menus loosing their bindings in their label (functionality
+  was still there)
+
 + Add undo protection to texture rotation, scaling and shifting
 
 + Patches by AEon:
