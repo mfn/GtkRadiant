@@ -12,3 +12,9 @@
 - add GUI pref to allow change font for views (currently must be done by hand in local.conf -> "GlFont")
 
 - group entries in NEWS file? currently it's chronically
+
+- tearoff menus loose their custom access labels they get from
+  MainFrame::ShowMenuItemKeyBindings() when detaching/attaching. Currently the
+  code hooks into notify::tearoff-state event and simply re-creates all labels
+  again. That's quite brute force, the menu in being de/attached in question
+  should be recreated, not all.
