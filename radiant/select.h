@@ -82,6 +82,3 @@ void UpdateWorkzone_ForBrush( brush_t* b );
 
 void Select_GroupEntity(entity_t* e);
 void Select_MergeEntity();
-
-// do we've something selected?
-bool Select_HasSelection();

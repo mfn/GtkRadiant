@@ -4214,7 +4214,7 @@ void MainFrame::AddPlugInToolbarButton(const IToolbarButton* button)
 
 void MainFrame::OnSelectionSelectNudgedown()
 {
-  if (!Select_HasSelection())
+  if (&selected_brushes == selected_brushes.next)
 	  return;
   Undo_Start("nudge down");
   Undo_AddBrushList(&selected_brushes);
@@ -4227,7 +4227,7 @@ void MainFrame::OnSelectionSelectNudgedown()
 
 void MainFrame::OnSelectionSelectNudgeleft()
 {
-  if (!Select_HasSelection())
+  if (&selected_brushes == selected_brushes.next)
 	  return;
   Undo_Start("nudge left");
   Undo_AddBrushList(&selected_brushes);
@@ -4240,7 +4240,7 @@ void MainFrame::OnSelectionSelectNudgeleft()
 
 void MainFrame::OnSelectionSelectNudgeright()
 {
-  if (!Select_HasSelection())
+  if (&selected_brushes == selected_brushes.next)
 	  return;
   Undo_Start("nudge right");
   Undo_AddBrushList(&selected_brushes);
@@ -4253,7 +4253,7 @@ void MainFrame::OnSelectionSelectNudgeright()
 
 void MainFrame::OnSelectionSelectNudgeup()
 {
-  if (!Select_HasSelection())
+  if (&selected_brushes == selected_brushes.next)
 	  return;
   Undo_Start("nudge up");
   Undo_AddBrushList(&selected_brushes);

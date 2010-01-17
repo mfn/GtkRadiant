@@ -2146,9 +2146,3 @@ void Select_AddToGroup(const char *pName)
   }
 }
 #endif
-
-// do we've something selected?
-bool Select_HasSelection()
-{
-	return g_qeglobals.d_select_count > 0;
-}
