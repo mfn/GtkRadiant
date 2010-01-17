@@ -8079,7 +8079,21 @@ void MainFrame::OnFilterWorld()
   Sys_UpdateWindows (W_XY|W_CAMERA);
 }
 
+/*
+mfn: this is part of a workaround to have the bindings shown *after* a menu has been detached/attached.
+Since ShowMenuItemKeyBindings() directly modified the access_label, this is information gets
+lost when a menu is detached. In menu_tearoff() we listen to the notify::tearoff-state signal
+and whenever it changes, this method gets called to rebuild them.
 
+TODO: this rebuilds all bindings for all commands. Would be nice if it just updates the
+bindings for the menu being detached/attached.
+
+See also http://github.com/mfn/GtkRadiant/issues#issue/66 for more details.
+*/
+void MainFrame::UpdateMenuItemBindings()
+{
+	ShowMenuItemKeyBindings(m_pWidget);
+}
 
 
 

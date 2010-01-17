@@ -761,12 +761,23 @@ GtkWidget* menu_separator (GtkWidget *menu)
   return menu_item;
 }
 
+/*
+mfn: rebuild menu shown menu item bindings whenever a menu is
+deatached/attached as it looses the values.
+*/
+static void tearoff_state_changed (GtkMenu *menu, GParamSpec *pspec, gpointer data)
+{
+	g_pParentWnd->UpdateMenuItemBindings();
+}
+
 GtkWidget* menu_tearoff (GtkWidget *menu)
 {
   GtkWidget *menu_item = gtk_tearoff_menu_item_new ();
   gtk_menu_append (GTK_MENU (menu), menu_item);
 // gtk_widget_set_sensitive (menu_item, FALSE); -- controls whether menu is detachable
   gtk_widget_show (menu_item);
+  // listen to this signal to rebuild the bindings shown to the menu items
+  g_signal_connect_after(menu, "notify::tearoff-state", G_CALLBACK(tearoff_state_changed), menu_item);
   return menu_item;
 }
 

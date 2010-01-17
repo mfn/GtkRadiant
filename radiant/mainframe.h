@@ -908,6 +908,7 @@ public:
   void OnFilterClusterportals();
   void OnFilterLightgrid();
   void OnSelectFuncGroup();
+  void UpdateMenuItemBindings();
 
 private:
   EViewStyle m_nCurrentStyle;
