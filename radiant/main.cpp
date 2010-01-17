@@ -33,6 +33,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
   #include <sys/stat.h>
 #endif
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include "stdafx.h"
@@ -447,6 +451,18 @@ int main( int argc, char* argv[] ) {
   seteuid(getuid());
   if ( geteuid() == 0 && ( loginname = getlogin() ) != NULL && ( pw = getpwnam(loginname) ) != NULL ) {
 	  setuid(pw->pw_uid);
+  }
+#endif
+
+#ifdef _WIN32
+  HMODULE lib;
+  lib = LoadLibrary("dwmapi.dll");
+  if(lib != 0)
+  {
+      void (WINAPI *DwmEnableComposition) (bool bEnable) = (void (WINAPI *) (bool bEnable)) GetProcAddress(lib, "DwmEnableComposition");
+      if(DwmEnableComposition)
+          DwmEnableComposition(FALSE);
+      FreeLibrary(lib);
   }
 #endif
 

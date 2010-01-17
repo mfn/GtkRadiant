@@ -4,6 +4,9 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
++ Disable desktop composition
+  Should fix issue #30; this is a port from NetRadiant rev. 311 .
+
 * Lift undo limits:
   Before: max undo = 64,   default = 30;   max undo memory = 2MB
   After:  max undo = 2048, default = 1024; max undo memory = 16MB
