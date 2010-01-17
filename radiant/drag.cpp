@@ -819,6 +819,8 @@ void Drag_MouseUp (int nButtons)
     // would have been an area selection, see below code
     if (drag_done == false && nButtons == MK_SHIFT && g_qeglobals.d_select_mode != sel_curvepoint)
     {
+        // Need to reset or a click into empty area will deselect all brushes
+        g_qeglobals.d_select_mode = sel_brush;
         int nFlag = Sys_AltDown() ? SF_CYCLE : 0;
         if (l_sf_camera)
           nFlag |= SF_CAMERA;
