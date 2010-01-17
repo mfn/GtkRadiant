@@ -2417,7 +2417,7 @@ void PrefsDlg::BuildDialog ()
                    (GtkAttachOptions) (0), 0, 0);
 
   // spinner (allows undo levels to be set to zero)
-  spin = gtk_spin_button_new (GTK_ADJUSTMENT (gtk_adjustment_new (1, 0, 64, 1, 10, 10)), 1, 0);
+  spin = gtk_spin_button_new (GTK_ADJUSTMENT (gtk_adjustment_new (1, 0, 2048, 1, 10, 10)), 1, 0);
   gtk_widget_show (spin);
   gtk_table_attach (GTK_TABLE (table), spin, 1, 2, 1, 2,
                    (GtkAttachOptions) (GTK_FILL),
@@ -2996,7 +2996,7 @@ void PrefsDlg::LoadPrefs ()
   mLocalPrefs.GetPref(SHOWSHADERS_KEY,        &m_bShowShaders,                TRUE);
   mLocalPrefs.GetPref(GLLIGHTING_KEY,         &m_bGLLighting,                 FALSE);
   mLocalPrefs.GetPref(NOSTIPPLE_KEY,          &m_bNoStipple,                  FALSE);
-  mLocalPrefs.GetPref(UNDOLEVELS_KEY,         &m_nUndoLevels,                 30);
+  mLocalPrefs.GetPref(UNDOLEVELS_KEY,         &m_nUndoLevels,                 1024);
   mLocalPrefs.GetPref(VERTEXMODE_KEY,         &m_bVertexSplit,                TRUE);
   mLocalPrefs.GetPref(RUNQ2_KEY,              &m_bRunQuake,                   RUNQ2_DEF);
   mLocalPrefs.GetPref(LEAKSTOP_KEY,           &m_bLeakStop,                   TRUE);

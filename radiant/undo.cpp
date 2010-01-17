@@ -54,9 +54,9 @@ undo_t *g_undolist;						//first undo in the list
 undo_t *g_lastundo;						//last undo in the list
 undo_t *g_redolist;						//first redo in the list
 undo_t *g_lastredo;						//last undo in list
-int g_undoMaxSize = 64;					//maximum number of undos
+int g_undoMaxSize = 1024;				//maximum number of undos
 int g_undoSize = 0;						//number of undos in the list
-int g_undoMaxMemorySize = 2*1024*1024;	//maximum undo memory (default 2 MB)
+int g_undoMaxMemorySize = 16*1024*1024;	//maximum undo memory (default 16 MB)
 int g_undoMemorySize = 0;				//memory size of undo buffer
 int g_undoId = 1;						//current undo ID (zero is invalid id)
 int g_redoId = 1;						//current redo ID (zero is invalid id)
