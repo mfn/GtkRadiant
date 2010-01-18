@@ -802,6 +802,7 @@ extern int g_nScaleHow;
 extern bool g_bPathMode;
 extern void RunScript(char* pBuffer);
 extern bool ExtractPath_and_Filename(const char* pPath, CString& strPath, CString& strFilename);
+extern bool Extract_Path_Filename_and_Extension(const char *pPath, CString& strPath, CString& strFilename, CString& strExtension);
 extern void Select_Scale(float x, float y, float z);
 extern void Select_RotateTexture(int amt);
 extern void Select_ScaleTexture(float x, float y);

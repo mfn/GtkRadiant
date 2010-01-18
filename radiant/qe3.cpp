@@ -169,8 +169,13 @@ void Map_Snapshot()
   // 1. make sure the snapshot directory exists (create it if it doesn't)
   // 2. find out what the lastest save is based on number
   // 3. inc that and save the map
-  CString strOrgPath, strOrgFile;
-  ExtractPath_and_Filename(currentmap, strOrgPath, strOrgFile);
+  CString strOrgPath, strOrgFile, strOrgExtension;
+  if (!Extract_Path_Filename_and_Extension(currentmap, strOrgPath, strOrgFile, strOrgExtension))
+  {
+	  Sys_Printf("Map_Snapshot: Cannot extract path, filename and extension, thus cannot save snapshot for %s !\n", currentmap);
+	  return;
+  }
+
   AddSlash(strOrgPath);
   strOrgPath += "snapshots";
   bool bGo = true;
@@ -197,7 +202,7 @@ void Map_Snapshot()
     while (bGo)
     {
       char buf[PATH_MAX];
-      sprintf( buf, "%s.%i", strNewPath.GetBuffer(), nCount );
+      sprintf( buf, "%s.%i.%s", strNewPath.GetBuffer(), nCount, strOrgExtension.GetBuffer());
       strFile = buf;
       bGo = DoesFileExist(strFile, lSize);
       nCount++;
@@ -219,6 +224,7 @@ void Map_Snapshot()
   }
   strOrgPath = "";
   strOrgFile = "";
+  strOrgExtension = "";
 }
 /*
 ===============
@@ -1625,6 +1631,33 @@ bool ExtractPath_and_Filename(const char* pPath, CString& strPath, CString& strF
   // TTimo: try forward slash, some are using forward
   else
     strFilename = pPath;
+  return true;
+}
+
+/*
+mfn: replicate ExtractPath_and_Filename but add extension extraction too, so we
+can fix Map_Snapshots.
+
+This function expects to extract *all* components from it (path, filename,
+extension) and returns only true if it succeeds in that.
+*/
+bool Extract_Path_Filename_and_Extension(const char *pPath, CString& strPath, CString& strFilename, CString& strExtension)
+{
+  CString strPathName;
+  strPathName = pPath;
+  int nSlash = strPathName.ReverseFind('\\');
+  if (nSlash == -1)
+    // TTimo: try forward slash, some are using forward
+    nSlash = strPathName.ReverseFind('/');
+  if (nSlash < 1)
+	  return false;
+  int nDot = strPathName.ReverseFind('.');
+  // No dot found or dot at position 0 or dot before slash -> error
+  if (nDot < 1 || nDot < nSlash)
+	  return false;
+  strPath = strPathName.Left(nSlash+1);
+  strFilename = strPathName.Mid(nSlash + 1, nDot - nSlash - 1);
+  strExtension = strPathName.Right(strPathName.GetLength() - nDot - 1);
   return true;
 }
 

@@ -4,6 +4,8 @@ GtkRadiant 1.6 aka ZeroRadiant
 
 day month year, GtkRadiant 1.6.x
 
+* Fix snapshots always being truncated to zero length .
+
 + Disable desktop composition
   Should fix issue #30; this is a port from NetRadiant rev. 311 .
 
