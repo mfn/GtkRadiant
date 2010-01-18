@@ -1191,7 +1191,7 @@ static void switch_page (GtkNotebook *notebook, GtkNotebookPage *page, guint pag
   gtk_label_get(GTK_LABEL(gtk_notebook_get_tab_label(notebook, gtk_notebook_get_nth_page(notebook, page_num))), &text);
   gtk_window_set_title (GTK_WINDOW (data), text);
 
-  gpointer item = g_object_get_data (G_OBJECT (g_pParentWnd->m_pWidget), "menu_misc_selectentitycolor");
+  gpointer item = g_object_get_data (G_OBJECT (g_pParentWnd->m_pWidget), "menu_misc_select_entitycolor");
 
   if (g_pParentWnd->FloatingGroupDialog())
   {
