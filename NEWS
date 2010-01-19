@@ -6,7 +6,7 @@ day month year, GtkRadiant 1.6.x
 
 * Fix snapshots always being truncated to zero length .
 
-+ Disable desktop composition
++ [Windows Vista/W7] Disable desktop composition
   Should fix issue #30; this is a port from NetRadiant rev. 311 .
 
 * Lift undo limits:
@@ -19,8 +19,11 @@ day month year, GtkRadiant 1.6.x
 + Add undo protection to texture rotation, scaling and shifting
 
 + Patches by AEon:
-  - Allow CTRL-SHIFT cursor keys to shift textures always by one grid unit
-  - Support numeric keypad keys for changing the grid
+  + Added CTRL-SHIFT cursor keys to shift and CTRL-SHIFT PageUp/PageDown to
+    rotate textures always by one grid unit
+  + Added Support to numeric keypad keys for changing the grid
+  * Possible fix for ghostet out "Misc / Select Entity Color..." menu
+  * [Windows] Fixed redundant empty lines in commandlist.txt
 
 + Always mark a map as modified after an undo-able action
   has been recorded (instead of starting to cluttering the
