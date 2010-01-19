@@ -18,3 +18,7 @@
   code hooks into notify::tearoff-state event and simply re-creates all labels
   again. That's quite brute force, the menu in being de/attached in question
   should be recreated, not all.
+
+- snapshots/autosave: don't have it enabled and load a map from e.g.
+  baseq3/maps/snapshots/mymap.12.map and continue from there. Further snapshots
+  will be saved into baseq3/maps/snapshots/snapshots/mymap.12.0.map ...
