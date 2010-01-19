@@ -450,8 +450,11 @@ void AddProp()
     return;
 	}
 
-  Undo_Start("change entity key/value");
-  Undo_AddBrushList(&selected_brushes);
+  int undo_available = Undo_UndoAvailable();
+  if (undo_available) {
+    Undo_Start("change entity key/value");
+    Undo_AddBrushList(&selected_brushes);
+  }
 
   if (multiple_entities)
   {
@@ -463,8 +466,10 @@ void AddProp()
   else
     SetKeyValue(edit_entity, key, value);
 
-  Undo_EndBrushList(&selected_brushes);
-  Undo_End();
+  if (undo_available) {
+    Undo_EndBrushList(&selected_brushes);
+    Undo_End();
+  }
 
   // refresh the prop listbox
   SetKeyValuePairs();
