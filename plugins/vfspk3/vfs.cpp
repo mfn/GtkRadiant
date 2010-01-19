@@ -693,7 +693,7 @@ char* vfsExtractRelativePath_short(const char *in, bool shorten)
 #endif // ifdef WIN32
   // Create yet another copy, this time with explicitly creating
   // a lower case version of the string which is *only* used for
-  // comparing them. The returned result is baed only on the
+  // comparing them. The returned result is based only on the
   // cleaned up version.
   strcpy(l_in_lower, l_in);
   strlwr(l_in_lower);
@@ -707,6 +707,7 @@ char* vfsExtractRelativePath_short(const char *in, bool shorten)
   {
     strcpy(check,g_strDirs[i]);
     vfsCleanFileName(check);
+    strlwr(check);
 #ifdef DBG_RLTPATH
     Sys_Printf("Matching against %s\n", check);
 #endif
