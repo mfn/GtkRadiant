@@ -2812,6 +2812,10 @@ void PrefsDlg::UpdateTextureCompression()
         Sys_Printf("S3TC DXT5 texture compression enabled\n");
         break;
       }
+    default:
+        g_qeglobals.texture_components = GL_RGBA;
+        Sys_Printf("texture compression disabled due to invalid preferences settings\n");
+        break;
     }
   }
   else
