@@ -3328,9 +3328,6 @@ void MainFrame::OnSleep()
 */
     Sys_Printf("Done.\n");
 
-    // bring back the GL font
-    gtk_glwidget_create_font (m_pCamWnd->GetWidget ());
-
     g_bScreenUpdates = true;
 
     Sys_Printf("Dispatching wake msg...");
