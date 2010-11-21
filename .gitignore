@@ -1,0 +1,7 @@
+build/
+install/
+Debug/
+radiant_VC9.ncb
+*.user
+*.suo
+*.pyc
